@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --cover-bg: #2c1e1a; /* Тот самый глубокий темный цвет */
+            --cover-bg: #2c1e1a;
             --gold: #d4a391;
             --page-bg: #fffcf9;
             --text-dark: #3d302d;
@@ -33,14 +33,13 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            transition: opacity 0.5s ease;
         }
 
         .hidden { display: none !important; }
 
-        /* ВХОД */
+        /* ЭКРАНЫ ВХОДА */
         .glass-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-radius: 40px;
@@ -48,10 +47,10 @@
             width: 100%;
             max-width: 340px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.08);
         }
 
-        .glass-card h1 { font-family: 'Great Vibes', cursive; font-size: 40px; color: var(--gold); margin-bottom: 30px; }
+        .glass-card h1 { font-family: 'Great Vibes', cursive; font-size: 42px; color: var(--gold); margin-bottom: 35px; }
         
         input {
             width: 100%;
@@ -60,67 +59,66 @@
             border-radius: 15px;
             margin-bottom: 20px;
             text-align: center;
-            font-size: 20px;
-            background: rgba(255,255,255,0.9);
+            font-size: 22px;
+            background: rgba(255,255,255,0.95);
+            color: #000;
             outline: none;
         }
 
-        .btn-main {
+        .btn-entry {
             width: 100%;
             padding: 18px;
             border: none;
             border-radius: 15px;
             background: var(--gold);
             color: white;
-            font-size: 16px;
-            letter-spacing: 2px;
+            font-size: 14px;
+            letter-spacing: 3px;
             text-transform: uppercase;
             font-weight: 600;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
         /* КНИГА */
-        .book-container {
+        .book-wrapper {
             width: 100%;
             max-width: 380px;
             height: 80vh;
             position: relative;
-            perspective: 1000px;
         }
 
         .page {
             position: absolute;
             width: 100%;
             height: 100%;
-            border-radius: 25px;
-            padding: 45px 30px;
+            border-radius: 30px;
+            padding: 40px 25px;
             display: none;
             flex-direction: column;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .page.active { display: flex; animation: pageTurn 0.6s ease-out; }
+        .page.active { display: flex; animation: slideUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 
-        @keyframes pageTurn {
-            from { transform: rotateY(15deg) translateX(20px); opacity: 0; }
-            to { transform: rotateY(0) translateX(0); opacity: 1; }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        /* ОБЛОЖКА (ТЕМНАЯ) */
+        /* ОБЛОЖКА */
         .page-cover {
             background: var(--cover-bg);
-            background-image: radial-gradient(circle at 50% 50%, rgba(212, 163, 145, 0.1) 0%, transparent 80%);
+            background-image: radial-gradient(circle at 50% 50%, rgba(212, 163, 145, 0.08) 0%, transparent 70%);
             color: var(--gold);
             justify-content: center;
             align-items: center;
             text-align: center;
-            border: 2px solid rgba(212, 163, 145, 0.2);
         }
+        .page-cover h1 { font-size: 80px; margin-bottom: 10px; }
+        .page-cover p { letter-spacing: 6px; font-size: 12px; opacity: 0.6; }
 
-        .page-cover h1 { font-family: 'Great Vibes', cursive; font-size: 75px; margin-bottom: 10px; }
-        .page-cover p { letter-spacing: 5px; font-size: 14px; color: rgba(212, 163, 145, 0.7); }
-
-        /* ВНУТРЕННИЕ СТРАНИЦЫ (СВЕТЛЫЕ) */
+        /* СТРАНИЦЫ ВНУТРИ */
         .page-inner {
             background: var(--page-bg);
             color: var(--text-dark);
@@ -134,116 +132,132 @@
             text-align: center;
         }
 
-        .content-text {
+        .text-box {
             font-size: 21px;
             line-height: 1.6;
             font-style: italic;
-            text-align: left;
+            flex-grow: 1;
         }
 
-        .page-footer {
-            margin-top: auto;
-            text-align: center;
+        /* КНОПКИ НАВИГАЦИИ */
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(140, 106, 93, 0.1);
+        }
+
+        .nav-btn {
+            background: none;
+            border: 1px solid rgba(140, 106, 93, 0.3);
+            color: #8c6a5d;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-family: inherit;
             font-size: 14px;
-            color: #bbb;
-            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
-        /* Управление */
-        .nav-zone {
-            position: absolute;
-            top: 0;
-            height: 100%;
-            width: 50%;
-            z-index: 1000;
-        }
-        .nav-left { left: 0; }
-        .nav-right { right: 0; }
+        .nav-btn:active { background: rgba(140, 106, 93, 0.1); }
 
-        .hint-swipe {
-            position: absolute;
-            bottom: 30px;
-            width: 100%;
-            text-align: center;
-            font-size: 13px;
+        .nav-btn.gold-style {
+            border-color: var(--gold);
             color: var(--gold);
-            opacity: 0.5;
-            animation: pulse 2s infinite;
         }
-        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
+
+        .page-num { font-size: 12px; color: #bbb; letter-spacing: 1px; }
+
     </style>
 </head>
 <body>
 
-    <!-- SCREEN 1: SURPRISE -->
+    <!-- SCREEN 1 -->
     <div id="scr1" class="screen">
         <div class="glass-card">
-            <h1 style="font-size: 35px;">Hello, my love</h1>
-            <p style="color: #ccc; margin-bottom: 30px; font-size: 18px;">Тут кое-что для тебя...</p>
-            <button class="btn-main" onclick="go('scr1', 'scr2')">Открыть</button>
+            <h1>A little gift...</h1>
+            <button class="btn-entry" onclick="go('scr1', 'scr2')">Открыть</button>
         </div>
     </div>
 
-    <!-- SCREEN 2: PASSWORD -->
+    <!-- SCREEN 2 -->
     <div id="scr2" class="screen hidden">
         <div class="glass-card">
             <h1>Secret</h1>
-            <p style="color: #ccc; margin-bottom: 20px;">Дата нашего начала</p>
+            <p style="color: #999; margin-bottom: 20px; font-size: 16px;">Введи нашу дату</p>
             <input type="password" id="pass" placeholder="ДДММГГ" inputmode="numeric">
-            <button class="btn-main" onclick="check()">Войти</button>
+            <button class="btn-entry" onclick="check()">Продолжить</button>
             <p id="err" style="color: var(--gold); margin-top: 15px; font-size: 14px;"></p>
         </div>
     </div>
 
-    <!-- SCREEN 3: BOOK -->
+    <!-- SCREEN 3 (BOOK) -->
     <div id="scr3" class="screen hidden">
-        <div class="book-container">
-            <!-- Зоны нажатия -->
-            <div class="nav-left" onclick="prev()"></div>
-            <div class="nav-right" onclick="next()"></div>
-
+        <div class="book-wrapper">
+            
             <!-- Обложка -->
             <div class="page page-cover active" id="p0">
                 <h1>E & E</h1>
-                <p>7 MONTHS OF LOVE</p>
-                <div class="hint-swipe">нажми справа →</div>
+                <p>SEVEN MONTHS</p>
+                <div style="margin-top: 40px;">
+                    <button class="nav-btn gold-style" onclick="next()">Открыть письмо</button>
+                </div>
             </div>
 
             <!-- Страница 1 -->
             <div class="page page-inner" id="p1">
-                <h2>О нежности</h2>
-                <div class="content-text">
+                <h2>Про нежность</h2>
+                <div class="text-box">
                     Семь месяцев — это время, за которое я научился ценить в тебе абсолютно всё. Даже твои обиды, когда ты дуешься как маленькая девочка, стали для меня чем-то родным. Ведь в конце ты всегда признаешься, что соскучилась. Это и есть настоящая близость.
                 </div>
-                <div class="page-footer">I / IV</div>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prev()">Назад</button>
+                    <span class="page-num">01 / 04</span>
+                    <button class="nav-btn" onclick="next()">Вперед</button>
+                </div>
             </div>
 
             <!-- Страница 2 -->
             <div class="page page-inner" id="p2">
-                <h2>О выборе</h2>
-                <div class="content-text">
+                <h2>Про выбор</h2>
+                <div class="text-box">
                     Знаешь, сдаться всегда проще. Но мы выбрали другой путь. Отношения — это не когда всё идеально, а когда вы стоите друг за друга, что бы ни случилось. Я не ищу лучшего в мире, я нашел своё в тебе. И это решение я буду принимать каждый день.
                 </div>
-                <div class="page-footer">II / IV</div>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prev()">Назад</button>
+                    <span class="page-num">02 / 04</span>
+                    <button class="nav-btn" onclick="next()">Вперед</button>
+                </div>
             </div>
 
             <!-- Страница 3 -->
             <div class="page page-inner" id="p3">
                 <h2>Об опоре</h2>
-                <div class="content-text">
+                <div class="text-box">
                     Твои эмоции и слезы — это не слабость, это твоя глубина. Я хочу, чтобы ты всегда чувствовала себя за мной, как за каменной стеной. Я здесь, чтобы оберегать твой покой и быть тем местом, где тебе всегда рады и где тебя всегда любят.
                 </div>
-                <div class="page-footer">III / IV</div>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prev()">Назад</button>
+                    <span class="page-num">03 / 04</span>
+                    <button class="nav-btn" onclick="next()">Вперед</button>
+                </div>
             </div>
 
             <!-- Страница 4 -->
             <div class="page page-inner" id="p4">
                 <h2>О будущем</h2>
-                <div class="content-text">
+                <div class="text-box">
                     Я часто представляю наш общий дом и то, как мы будем просыпаться вместе. Ты — мой спутник жизни, и впереди у нас еще бесконечное количество таких месяцев. Я люблю тебя, моя булочка. Спасибо за эти 7 месяцев счастья.
                 </div>
-                <div class="page-footer">Навсегда. Твой Эльмуся</div>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prev()">Назад</button>
+                    <span class="page-num">Навсегда</span>
+                    <span style="width: 60px;"></span>
+                </div>
             </div>
+
         </div>
     </div>
 
@@ -257,7 +271,7 @@
             if(document.getElementById('pass').value === '201025') {
                 go('scr2', 'scr3');
             } else {
-                document.getElementById('err').innerText = "Неверная дата, балам";
+                document.getElementById('err').innerText = "Попробуй еще раз, балам";
             }
         }
 
