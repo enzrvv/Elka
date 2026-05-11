@@ -89,15 +89,15 @@
             width: 100%;
             height: 100%;
             border-radius: 20px;
-            padding: 30px 20px;
+            padding: 40px 25px;
             display: none;
             flex-direction: column;
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
-        .page.active { display: flex; animation: fadeIn 0.5s ease; }
+        .page.active { display: flex; animation: fadeIn 0.6s ease; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
         .page-cover {
             background: var(--cover-bg);
@@ -128,8 +128,8 @@
         }
 
         .text-box {
-            font-size: 17.5px;
-            line-height: 1.5;
+            font-size: 19px;
+            line-height: 1.6;
             font-style: italic;
             flex-grow: 1;
             display: flex;
@@ -142,24 +142,26 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid rgba(0,0,0,0.05);
+            margin-top: 15px;
         }
 
-        .nav-btn {
+        .arrow-btn {
             background: none;
-            border: 1px solid rgba(61, 48, 45, 0.2);
+            border: none;
             color: var(--text-dark);
-            padding: 6px 14px;
-            border-radius: 12px;
-            font-size: 12px;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 10px;
+            opacity: 0.6;
         }
+
+        .arrow-btn:active { opacity: 1; }
 
         .signature {
             font-family: 'Great Vibes', cursive;
-            font-size: 32px;
+            font-size: 34px;
             text-align: center;
+            line-height: 1.2;
         }
     </style>
 </head>
@@ -184,314 +186,199 @@
     <div id="scr3" class="screen hidden">
         <div class="book-wrapper">
             
+            <!-- ОБЛОЖКА -->
             <div class="page page-cover active" id="p0">
                 <div class="gold-embossing">
                     <p style="letter-spacing: 4px; opacity: 0.6; font-size: 12px;">MEMORIES</p>
                     <h1>Diary of Love</h1>
                     <p style="margin-top: 20px; font-size: 14px;">Seven Months</p>
-                    <button class="nav-btn" style="color: var(--gold); border-color: var(--gold); margin-top: 30px;" onclick="next()">Читать</button>
+                    <button class="btn-entry" style="margin-top: 30px; max-width: 150px; align-self: center;" onclick="next()">Читать</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 1 -->
             <div class="page page-inner" id="p1">
                 <div class="text-box">
-                    Нам 7 месяцев, не могу в это поверить <br><br>
-                    И вроде бы это просто цифра, но если честно, внутри ощущается так, будто мы прожили намного больше, чем половину года. Это уже не про время, это про нас.
+                    Нам 7 месяцев, не могу в это поверить. И вроде бы это просто цифра, но если честно, внутри ощущается так, будто мы прожили намного больше, чем половину года. Это уже не про время, это про нас. Про всё, что между нами было, про эмоции, про ссоры, про примирения, про моменты, когда мы почти ломались, но всё равно оставались друг у друга.
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 2 -->
             <div class="page page-inner" id="p2">
                 <div class="text-box">
-                    Про всё, что между нами было, про эмоции, про ссоры, про примирения, про моменты, когда мы почти ломались, но всё равно оставались друг у друга <br><br>
-                    Мы не идеальные. И даже близко нет. 
+                    Мы не идеальные. И даже близко нет. У нас были ссоры, иногда очень тяжёлые, когда слова могли ранить, когда тишина длилась слишком долго, когда казалось, что мы на грани. Но потом происходило одно и то же. Мы скучали. И вот это чувство всегда было сильнее гордости, сильнее обид, сильнее любых эмоций.
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 3 -->
             <div class="page page-inner" id="p3">
                 <div class="text-box">
-                    У нас были ссоры, иногда очень тяжёлые, когда слова могли ранить, когда тишина длилась слишком долго, когда казалось, что мы на грани. Но потом происходило одно и то же. Мы скучали.
+                    Мы возвращались друг к другу. И каждый раз это было как будто заново, но уже глубже. Я помню наши обнимашки. И если честно, это отдельная часть нашей истории, которую невозможно перепутать ни с чем другим. У кресента. Это не было просто «мы встретились и обнялись».
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 4 -->
             <div class="page page-inner" id="p4">
                 <div class="text-box">
-                    И вот это чувство всегда было сильнее гордости, сильнее обид, сильнее любых эмоций. Мы возвращались друг к другу <br><br>
-                    И каждый раз это было как будто заново, но уже глубже
+                    Это было как будто весь мир на секунду перестал существовать. Ты пришла с переживаниями, с волнением, с внутренним страхом, но ты всё равно была рядом. И в тот момент, когда мы обнялись, это было ощущение, что время остановилось. Что нет людей вокруг, нет шума, нет проблем. Только ты и я.
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 5 -->
             <div class="page page-inner" id="p5">
                 <div class="text-box">
-                    Я помню наши обнимашки. И если честно, это отдельная часть нашей истории, которую невозможно перепутать ни с чем другим <br><br>
-                    У кресента. Это не было просто «мы встретились и обнялись».
+                    И когда я поцеловал ручки моей малюськи, это было не просто так. Это было как очень бережный, почти трепетный жест, будто в этот момент ты для меня самое ценное, что есть. В этих поцелуях было всё — забота, нежность, и то чувство, когда человек настолько важен, что любое прикосновение становится особенным.
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 6 -->
             <div class="page page-inner" id="p6">
                 <div class="text-box">
-                    Это было как будто весь мир на секунду перестал существовать. Ты пришла с переживаниями, с волнением, с внутренним страхом, но ты всё равно была рядом. И в тот момент, когда мы обнялись, это было ощущение, что время остановилось.
+                    Или те обнимашки в подъезде математики. Когда всё получилось буквально в последний момент. Я успел приехать, и в ту секунду, когда ты оказалась в моих руках, это было ощущение, что всё стало на свои места. Очень быстро, очень живо, но при этом так тепло, что до сих пор помнится.
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 7 -->
             <div class="page page-inner" id="p7">
                 <div class="text-box">
-                    Что нет людей вокруг, нет шума, нет проблем. Только ты и я. И это было невообразимо тёплое чувство, которое сложно объяснить словами
+                    И ещё те обнимашки перед ляман. Мы обнимались, а она там так удивилась. Мы потом это обсуждали) даже само объятие всё равно было настоящим, живым, немного неловким, но очень нашим. И наши поцелуи. Щёчки, ручки, голова... Каждый такой момент для меня как маленькое тепло, которое остаётся внутри надолго.
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 8 -->
             <div class="page page-inner" id="p8">
                 <div class="text-box">
-                    И когда я поцеловал ручки моей малюськи, это было не просто так. Это было как очень бережный, почти трепетный жест, будто в этот момент ты для меня самое ценное, что есть.
+                    Когда я целую тебя в щёчку, это не просто жест, это как тихое «ты мне важна» без слов. Когда целую твои ручки после обнимашек, это ощущается как что-то очень бережное, как будто я пытаюсь передать всё, что чувствую, но не всегда умею сказать. Даже поцелуи в голову, мягкие, спокойные, они всегда дают ощущение уюта, будто в этот момент всё правильно.
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 9 -->
             <div class="page page-inner" id="p9">
                 <div class="text-box">
-                    В этих поцелуях было всё, забота, нежность, и то чувство, когда человек настолько важен, что любое прикосновение становится особенным
+                    И знаешь, всё это не про идеальные отношения. Да, идеальных отношений как в кино не существует. Но нам это и не нужно. Потому что у нас есть реальность. Настоящая. Иногда сложная, иногда эмоциональная, но живая. И самое главное, в этой реальности мы всегда возвращаемся друг к другу. Даже если меньше общаемся.
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 10 -->
             <div class="page page-inner" id="p10">
                 <div class="text-box">
-                    Или те обнимашки в подъезде математики. Когда всё получилось буквально в последний момент. Я успел приехать, и в ту секунду, когда ты оказалась в моих руках, это было ощущение, что всё стало на свои места.
+                    Даже если ссоримся. Даже если усталость или обиды между нами. Мы всё равно не отпускаем. И с каждым таким моментом мы становимся ближе. Ты для меня человек, с которым спокойно по-настоящему. Не просто приятно, а именно спокойно. С тобой я могу быть собой, без попыток казаться лучше.
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 11 -->
             <div class="page page-inner" id="p11">
                 <div class="text-box">
-                    Очень быстро, очень живо, но при этом так тепло, что до сих пор помнится <br><br>
-                    И ещё те обнимашки перед ляман. Мы обнимались, а она там так удивилась. Мы потом это обсуждали) 
+                    Со всеми своими ошибками, эмоциями, ревностью, странностями, тем, что иногда сам в себе не понимаю. И ты всё это видела. И всё равно осталась рядом. И это, бин, самое ценное. Я правда очень ценю тебя. И иногда мне даже стыдно за свои поступки, за моменты, когда я делаю тебе больно или веду себя не так. Но ты всё равно не уходишь.
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 12 -->
             <div class="page page-inner" id="p12">
                 <div class="text-box">
-                    даже само объятие всё равно было настоящим, живым, немного неловким, но очень нашим <br><br>
-                    И наши поцелуи <br>
-                    Щёчки, ручки, голова
+                    Ты остаёшься. И мы не ломаемся, а пытаемся говорить, понимать, исправлять. Если вспомнить конец декабря и январь, это был очень важный период для нас. Мы тогда реально могли потеряться. Было непонимание, напряжение, ощущение, что всё рушится. Но мы не отпустили. Мы остались. И прошли через это. 
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 13 -->
             <div class="page page-inner" id="p13">
                 <div class="text-box">
-                    Каждый такой момент для меня как маленькое тепло, которое остаётся внутри надолго <br><br>
-                    Когда я целую тебя в щёчку, это не просто жест, это как тихое «ты мне важна» без слов. 
+                    И именно тогда стало понятно, что это не просто эмоции, а что-то, что мы держим осознанно. Сейчас мы уже другие. Не идеальные, но более настоящие. Мы умеем говорить. Пусть не всегда сразу, пусть не всегда легко, но мы стараемся понимать друг друга. И это огромный шаг вперёд.
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 14 -->
             <div class="page page-inner" id="p14">
                 <div class="text-box">
-                    Когда целую твои ручки после обнимашек, это ощущается как что то очень бережное, как будто я пытаюсь передать всё, что чувствую, но не всегда умею сказать. Даже поцелуи в голову, мягкие, спокойные, они всегда дают ощущение уюта, будто в этот момент всё правильно
+                    И даже то, что мы иногда меньше общаемся сейчас, не уменьшает то, что между нами есть. Потому что основа не в количестве сообщений, а в том, что мы друг для друга значим. Иногда я думаю о будущем. Уже не как о далёкой мечте, а как о чём-то, что мы реально обсуждаем.
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 15 -->
             <div class="page page-inner" id="p15">
                 <div class="text-box">
-                    И знаешь, всё это не про идеальные отношения <br><br>
-                    Да, идеальных отношений как в кино не существует. Но нам это и не нужно. Потому что у нас есть реальность. Настоящая. 
+                    Дом, жизнь, свадьба, обычные дни вместе, когда не нужно ничего доказывать, когда есть просто «мы». И это уже не кажется фантазией. Это кажется дорогой, по которой мы идём. Я не идеален. Я это знаю. Я могу ошибаться, могу перегибать, могу не всегда правильно выражать себя.
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
+            <!-- СТРАНИЦА 16 -->
             <div class="page page-inner" id="p16">
                 <div class="text-box">
-                    Иногда сложная, иногда эмоциональная, но живая. И самое главное, в этой реальности мы всегда возвращаемся друг к другу. Даже если меньше общаемся. Даже если ссоримся.
+                    Но ты всё равно рядом, и я это не воспринимаю как должное. Я понимаю, что это выбор. И я очень стараюсь быть достойным этого выбора. Нам 7 месяцев. Но ощущение такое, будто это только начало большой истории. И если это начало, то я не хочу терять то, что у нас есть. Я верю в нас.
                 </div>
                 <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
+                    <button class="arrow-btn" onclick="next()">&#8250;</button>
                 </div>
             </div>
 
-            <div class="page page-inner" id="p17">
-                <div class="text-box">
-                    Даже если усталость или обиды между нами. Мы всё равно не отпускаем. И с каждым таким моментом мы становимся ближе
-                </div>
-                <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
-                </div>
-            </div>
-
-            <div class="page page-inner" id="p18">
-                <div class="text-box">
-                    Ты для меня человек, с которым спокойно по настоящему. Не просто приятно, а именно спокойно. С тобой я могу быть собой, без попыток казаться лучше. 
-                </div>
-                <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
-                </div>
-            </div>
-
-            <div class="page page-inner" id="p19">
-                <div class="text-box">
-                    Со всеми своими ошибками, эмоциями, ревностью, странностями, тем, что иногда сам в себе не понимаю. И ты всё это видела. И всё равно осталась рядом. <br><br>
-                    И это, бин, самое ценное
-                </div>
-                <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
-                </div>
-            </div>
-
-            <div class="page page-inner" id="p20">
-                <div class="text-box">
-                    Я правда очень ценю тебя. И иногда мне даже стыдно за свои поступки, за моменты, когда я делаю тебе больно или веду себя не так. Но ты всё равно не уходишь. Ты остаёшься. 
-                </div>
-                <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
-                </div>
-            </div>
-
-            <div class="page page-inner" id="p21">
-                <div class="text-box">
-                    И мы не ломаемся, а пытаемся говорить, понимать, исправлять <br><br>
-                    Если вспомнить конец декабря и январь, это был очень важный период для нас. Мы тогда реально могли потеряться. 
-                </div>
-                <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
-                </div>
-            </div>
-
-            <div class="page page-inner" id="p22">
-                <div class="text-box">
-                    Было непонимание, напряжение, ощущение, что всё рушится. Но мы не отпустили. Мы остались. И прошли через это. И именно тогда стало понятно, что это не просто эмоции, а что то, что мы держим осознанно.
-                </div>
-                <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
-                </div>
-            </div>
-
-            <div class="page page-inner" id="p23">
-                <div class="text-box">
-                    Сейчас мы уже другие. Не идеальные, но более настоящие. Мы умеем говорить. Пусть не всегда сразу, пусть не всегда легко, но мы стараемся понимать друг друга. И это огромный шаг вперёд
-                </div>
-                <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
-                </div>
-            </div>
-
-            <div class="page page-inner" id="p24">
-                <div class="text-box">
-                    И даже то, что мы иногда меньше общаемся сейчас, не уменьшает то, что между нами есть. Потому что основа не в количестве сообщений, а в том, что мы друг для друга значим
-                </div>
-                <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
-                </div>
-            </div>
-
-            <div class="page page-inner" id="p25">
-                <div class="text-box">
-                    Иногда я думаю о будущем. Уже не как о далёкой мечте, а как о чём то, что мы реально обсуждаем. Дом, жизнь, свадьба, обычные дни вместе, когда не нужно ничего доказывать, когда есть просто «мы». 
-                </div>
-                <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
-                </div>
-            </div>
-
-            <div class="page page-inner" id="p26">
-                <div class="text-box">
-                    И это уже не кажется фантазией. Это кажется дорогой, по которой мы идём <br><br>
-                    Я не идеален. Я это знаю. Я могу ошибаться, могу перегибать, могу не всегда правильно выражать себя. 
-                </div>
-                <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
-                </div>
-            </div>
-
-            <div class="page page-inner" id="p27">
-                <div class="text-box">
-                    Но ты всё равно рядом, и я это не воспринимаю как должное. Я понимаю, что это выбор. И я очень стараюсь быть достойным этого выбора <br><br>
-                    Нам 7 месяцев
-                </div>
-                <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
-                </div>
-            </div>
-
-            <div class="page page-inner" id="p28">
-                <div class="text-box">
-                    Но ощущение такое, будто это только начало большой истории. И если это начало, то я не хочу терять то, что у нас есть. Я верю в нас.
-                </div>
-                <div class="nav-controls">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
-                    <button class="nav-btn" onclick="next()">Далее</button>
-                </div>
-            </div>
-
-            <div class="page page-inner" id="p29" style="justify-content: center;">
+            <!-- ФИНАЛ -->
+            <div class="page page-inner" id="p17" style="justify-content: center;">
                 <div class="signature">
-                    С любовью<br>твой маленький мальчик🤍
+                    С любовью,<br>твой маленький мальчик🤍
                 </div>
-                <div class="nav-controls" style="border:none; margin-top:40px;">
-                    <button class="nav-btn" onclick="prev()">Назад</button>
+                <div class="nav-controls" style="margin-top: 40px; justify-content: center;">
+                    <button class="arrow-btn" onclick="prev()">&#8249;</button>
                 </div>
             </div>
 
@@ -513,7 +400,7 @@
         }
 
         let cur = 0;
-        const total = 30; 
+        const total = 18; 
 
         function update() {
             document.querySelectorAll('.page').forEach((p, i) => {
