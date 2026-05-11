@@ -2,16 +2,22 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>E + E</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>For E.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --cover-bg: #2c1e1a; /* Тот самый глубокий темный цвет */
+            --gold: #d4a391;
+            --page-bg: #fffcf9;
+            --text-dark: #3d302d;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
             height: 100vh;
-            background: #fdfcfb;
-            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1ca 100%);
+            background: #1a1210;
             font-family: 'Cormorant Garamond', serif;
             display: flex;
             justify-content: center;
@@ -27,201 +33,245 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            transition: opacity 0.5s ease;
         }
 
-        .card {
-            background: white;
-            border-radius: 30px;
-            padding: 40px 25px;
+        .hidden { display: none !important; }
+
+        /* ВХОД */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 40px;
+            padding: 50px 30px;
             width: 100%;
             max-width: 340px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        h1 { font-family: 'Great Vibes', cursive; font-size: 50px; color: #d4a391; margin-bottom: 20px; }
+        .glass-card h1 { font-family: 'Great Vibes', cursive; font-size: 40px; color: var(--gold); margin-bottom: 30px; }
         
         input {
             width: 100%;
-            padding: 15px;
-            border: 1px solid #eee;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-size: 18px;
-        }
-
-        button {
-            width: 100%;
-            padding: 16px;
+            padding: 18px;
             border: none;
             border-radius: 15px;
-            background: #d4a391;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 20px;
+            background: rgba(255,255,255,0.9);
+            outline: none;
+        }
+
+        .btn-main {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            background: var(--gold);
             color: white;
-            font-size: 18px;
-            cursor: pointer;
+            font-size: 16px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
         }
 
         /* КНИГА */
-        .book-box {
+        .book-container {
             width: 100%;
             max-width: 380px;
-            height: 75vh;
+            height: 80vh;
             position: relative;
+            perspective: 1000px;
         }
 
         .page {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: white;
             border-radius: 25px;
-            padding: 35px 25px;
+            padding: 45px 30px;
             display: none;
             flex-direction: column;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
         }
 
-        .page.active { display: flex; }
+        .page.active { display: flex; animation: pageTurn 0.6s ease-out; }
 
-        .page h2 {
+        @keyframes pageTurn {
+            from { transform: rotateY(15deg) translateX(20px); opacity: 0; }
+            to { transform: rotateY(0) translateX(0); opacity: 1; }
+        }
+
+        /* ОБЛОЖКА (ТЕМНАЯ) */
+        .page-cover {
+            background: var(--cover-bg);
+            background-image: radial-gradient(circle at 50% 50%, rgba(212, 163, 145, 0.1) 0%, transparent 80%);
+            color: var(--gold);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 2px solid rgba(212, 163, 145, 0.2);
+        }
+
+        .page-cover h1 { font-family: 'Great Vibes', cursive; font-size: 75px; margin-bottom: 10px; }
+        .page-cover p { letter-spacing: 5px; font-size: 14px; color: rgba(212, 163, 145, 0.7); }
+
+        /* ВНУТРЕННИЕ СТРАНИЦЫ (СВЕТЛЫЕ) */
+        .page-inner {
+            background: var(--page-bg);
+            color: var(--text-dark);
+        }
+
+        .page-inner h2 {
             font-family: 'Great Vibes', cursive;
-            font-size: 32px;
-            color: #d4a391;
-            margin-bottom: 15px;
+            font-size: 38px;
+            color: #8c6a5d;
+            margin-bottom: 25px;
             text-align: center;
         }
 
-        .content {
-            font-size: 19px;
+        .content-text {
+            font-size: 21px;
             line-height: 1.6;
-            color: #4a342e;
+            font-style: italic;
+            text-align: left;
         }
 
-        .cover-style {
-            background: #d4a391;
-            color: white;
-            justify-content: center;
-            align-items: center;
+        .page-footer {
+            margin-top: auto;
+            text-align: center;
+            font-size: 14px;
+            color: #bbb;
+            letter-spacing: 1px;
         }
-        .cover-style h1 { color: white; }
 
-        /* Зоны клика */
-        .click-left, .click-right {
+        /* Управление */
+        .nav-zone {
             position: absolute;
             top: 0;
             height: 100%;
-            width: 25%;
-            z-index: 100;
+            width: 50%;
+            z-index: 1000;
         }
-        .click-left { left: 0; }
-        .click-right { right: 0; }
+        .nav-left { left: 0; }
+        .nav-right { right: 0; }
 
-        .hint {
-            margin-top: 20px;
-            font-size: 14px;
-            opacity: 0.6;
+        .hint-swipe {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
             text-align: center;
+            font-size: 13px;
+            color: var(--gold);
+            opacity: 0.5;
+            animation: pulse 2s infinite;
         }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
     </style>
 </head>
 <body>
 
-    <!-- Шаг 1 -->
-    <div id="step1" class="screen">
-        <div class="card">
-            <h1>Привет :)</h1>
-            <p style="margin-bottom: 20px;">Нажми на кнопку ниже</p>
-            <button onclick="document.getElementById('step1').style.display='none'; document.getElementById('step2').style.display='flex';">
-                Открыть
-            </button>
+    <!-- SCREEN 1: SURPRISE -->
+    <div id="scr1" class="screen">
+        <div class="glass-card">
+            <h1 style="font-size: 35px;">Hello, my love</h1>
+            <p style="color: #ccc; margin-bottom: 30px; font-size: 18px;">Тут кое-что для тебя...</p>
+            <button class="btn-main" onclick="go('scr1', 'scr2')">Открыть</button>
         </div>
     </div>
 
-    <!-- Шаг 2 -->
-    <div id="step2" class="screen" style="display:none;">
-        <div class="card">
+    <!-- SCREEN 2: PASSWORD -->
+    <div id="scr2" class="screen hidden">
+        <div class="glass-card">
             <h1>Secret</h1>
-            <p style="margin-bottom: 15px; color: #888;">Введи нашу дату (ДДММГГ)</p>
-            <input type="password" id="pw" pattern="\d*">
-            <button onclick="checkPass()">Войти</button>
-            <p id="err" style="color: #d4a391; margin-top: 10px; font-size: 14px;"></p>
+            <p style="color: #ccc; margin-bottom: 20px;">Дата нашего начала</p>
+            <input type="password" id="pass" placeholder="ДДММГГ" inputmode="numeric">
+            <button class="btn-main" onclick="check()">Войти</button>
+            <p id="err" style="color: var(--gold); margin-top: 15px; font-size: 14px;"></p>
         </div>
     </div>
 
-    <!-- Шаг 3 (Книга) -->
-    <div id="step3" class="screen" style="display:none;">
-        <div class="book-box">
-            <!-- Зоны клика -->
-            <div class="click-left" onclick="prev()"></div>
-            <div class="click-right" onclick="next()"></div>
+    <!-- SCREEN 3: BOOK -->
+    <div id="scr3" class="screen hidden">
+        <div class="book-container">
+            <!-- Зоны нажатия -->
+            <div class="nav-left" onclick="prev()"></div>
+            <div class="nav-right" onclick="next()"></div>
 
-            <!-- Страницы -->
-            <div class="page active cover-style" id="p0">
-                <h1>E + E</h1>
-                <p>7 МЕСЯЦЕВ СЧАСТЬЯ</p>
-                <div class="hint">Нажми на правую часть →</div>
+            <!-- Обложка -->
+            <div class="page page-cover active" id="p0">
+                <h1>E & E</h1>
+                <p>7 MONTHS OF LOVE</p>
+                <div class="hint-swipe">нажми справа →</div>
             </div>
 
-            <div class="page" id="p1">
-                <h2>Наши чувства</h2>
-                <div class="content">
-                    Элька, балам, вот и наши первые 7 месяцев. Знаешь, что мне больше всего нравится в нас? Помимо того, что ты обижаешься как маленькая девочка, а потом пишешь: «я пообижалась, но соскучилась». Это безумно мило.
+            <!-- Страница 1 -->
+            <div class="page page-inner" id="p1">
+                <h2>О нежности</h2>
+                <div class="content-text">
+                    Семь месяцев — это время, за которое я научился ценить в тебе абсолютно всё. Даже твои обиды, когда ты дуешься как маленькая девочка, стали для меня чем-то родным. Ведь в конце ты всегда признаешься, что соскучилась. Это и есть настоящая близость.
                 </div>
+                <div class="page-footer">I / IV</div>
             </div>
 
-            <div class="page" id="p2">
-                <h2>О планах</h2>
-                <div class="content">
-                    Мне безумно нравится, как мы планируем будущее. Когда ты в это веришь, мне становится так приятно. Иногда ты мне как мама, а иногда я с тобой как с ребеночком — мы дополняем друг друга.
+            <!-- Страница 2 -->
+            <div class="page page-inner" id="p2">
+                <h2>О выборе</h2>
+                <div class="content-text">
+                    Знаешь, сдаться всегда проще. Но мы выбрали другой путь. Отношения — это не когда всё идеально, а когда вы стоите друг за друга, что бы ни случилось. Я не ищу лучшего в мире, я нашел своё в тебе. И это решение я буду принимать каждый день.
                 </div>
+                <div class="page-footer">II / IV</div>
             </div>
 
-            <div class="page" id="p3">
-                <h2>Моя опора</h2>
-                <div class="content">
-                    Не извиняйся за свои эмоции. Ты чувствительная девочка, я всё понимаю. Я твоя опора, я никуда не денусь. Плакать и уходить я не собираюсь. Мы всегда будем вместе, улыбаться и радоваться.
+            <!-- Страница 3 -->
+            <div class="page page-inner" id="p3">
+                <h2>Об опоре</h2>
+                <div class="content-text">
+                    Твои эмоции и слезы — это не слабость, это твоя глубина. Я хочу, чтобы ты всегда чувствовала себя за мной, как за каменной стеной. Я здесь, чтобы оберегать твой покой и быть тем местом, где тебе всегда рады и где тебя всегда любят.
                 </div>
+                <div class="page-footer">III / IV</div>
             </div>
 
-            <div class="page" id="p4">
-                <h2>Навсегда</h2>
-                <div class="content">
-                    Ты — мой «спутник жизни». Уйти от тебя для меня никогда не будет вариантом. Я выбрал тебя окончательно. Нас ждут тысячи вечеров в обнимку и целая жизнь рядом. Я люблю тебя! 🤍
+            <!-- Страница 4 -->
+            <div class="page page-inner" id="p4">
+                <h2>О будущем</h2>
+                <div class="content-text">
+                    Я часто представляю наш общий дом и то, как мы будем просыпаться вместе. Ты — мой спутник жизни, и впереди у нас еще бесконечное количество таких месяцев. Я люблю тебя, моя булочка. Спасибо за эти 7 месяцев счастья.
                 </div>
-                <p style="text-align: right; margin-top: 20px; font-weight: bold;">Твой Эльмуся</p>
+                <div class="page-footer">Навсегда. Твой Эльмуся</div>
             </div>
         </div>
     </div>
 
     <script>
-        function checkPass() {
-            if(document.getElementById('pw').value === '201025') {
-                document.getElementById('step2').style.display='none';
-                document.getElementById('step3').style.display='flex';
+        function go(f, t) {
+            document.getElementById(f).classList.add('hidden');
+            document.getElementById(t).classList.remove('hidden');
+        }
+
+        function check() {
+            if(document.getElementById('pass').value === '201025') {
+                go('scr2', 'scr3');
             } else {
-                document.getElementById('err').innerText = "Неверная дата, попробуй еще раз";
+                document.getElementById('err').innerText = "Неверная дата, балам";
             }
         }
 
-        let current = 0;
-        const totalPages = 5;
+        let cur = 0;
+        const total = 5;
 
-        function next() {
-            if(current < totalPages - 1) {
-                document.getElementById('p' + current).classList.remove('active');
-                current++;
-                document.getElementById('p' + current).classList.add('active');
-            }
+        function update() {
+            document.querySelectorAll('.page').forEach((p, i) => {
+                p.classList.toggle('active', i === cur);
+            });
         }
 
-        function prev() {
-            if(current > 0) {
-                document.getElementById('p' + current).classList.remove('active');
-                current--;
-                document.getElementById('p' + current).classList.add('active');
-            }
-        }
+        function next() { if(cur < total - 1) { cur++; update(); } }
+        function prev() { if(cur > 0) { cur--; update(); } }
     </script>
 </body>
 </html>
