@@ -15,28 +15,32 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
-            height: 100vh;
-            background: #1a1210; /* Темный фон вокруг для контраста */
+            /* Используем dvh для идеального центрирования на мобильных */
+            height: 100dvh; 
+            background: #1a1210;
             font-family: 'Cormorant Garamond', serif;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            position: relative;
         }
 
         .screen {
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center; /* Центрирует по вертикали */
             padding: 20px;
         }
 
         .hidden { display: none !important; }
 
-        /* ЭКРАНЫ ВХОДА */
+        /* КАРТОЧКИ ВХОДА */
         .glass-card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(15px);
@@ -47,6 +51,8 @@
             max-width: 340px;
             text-align: center;
             border: 1px solid rgba(255,255,255,0.1);
+            /* Гарантируем, что карточка не улетит вверх */
+            margin: auto;
         }
 
         .glass-card h1 { font-family: 'Great Vibes', cursive; font-size: 38px; color: var(--gold); margin-bottom: 30px; }
@@ -61,6 +67,7 @@
             font-size: 20px;
             background: #fdfcfb;
             color: #000;
+            outline: none;
         }
 
         .btn-entry {
@@ -73,14 +80,18 @@
             font-size: 14px;
             letter-spacing: 2px;
             text-transform: uppercase;
+            font-weight: 600;
         }
 
         /* КНИГА */
         .book-wrapper {
             width: 100%;
             max-width: 380px;
-            height: 85vh;
+            height: 80dvh; /* Чуть уменьшил высоту для баланса */
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .page {
@@ -88,76 +99,79 @@
             width: 100%;
             height: 100%;
             background-color: #f2e8d5;
-            /* Текстура старой бумаги */
             background-image: url('https://www.transparenttextures.com/patterns/old-paper.png');
-            border-radius: 5px;
-            padding: 40px 25px;
+            border-radius: 15px;
+            padding: 35px 25px;
             display: none;
             flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             border: 1px solid #d4c4a8;
         }
 
-        /* Эффект неровных краев старой бумаги */
         .page::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            box-shadow: inset 0 0 50px rgba(139, 69, 19, 0.15);
+            box-shadow: inset 0 0 40px rgba(139, 69, 19, 0.1);
             pointer-events: none;
+            border-radius: 15px;
         }
 
-        .page.active { display: flex; animation: fadeIn 0.8s ease; }
+        .page.active { display: flex; animation: fadeIn 0.6s ease-out; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* ОБЛОЖКА */
         .page-cover {
-            background: #2c1e1a !important; /* Тёмная кожаная обложка */
+            background: #2c1e1a !important;
             color: var(--gold);
             justify-content: center;
             align-items: center;
             text-align: center;
         }
         .page-cover h1 { font-size: 70px; }
-        .page-cover p { letter-spacing: 5px; font-size: 14px; margin-top: 10px; }
 
         /* ВНУТРЕННИЕ СТРАНИЦЫ */
         .page h2 {
             font-family: 'Great Vibes', cursive;
-            font-size: 32px;
+            font-size: 30px;
             color: #5d4037;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: center;
         }
 
         .text-box {
-            font-size: 18.5px;
-            line-height: 1.55;
+            font-size: 19px;
+            line-height: 1.5;
             color: var(--ink);
             font-style: italic;
             flex-grow: 1;
             overflow-y: auto;
+            padding-right: 5px;
         }
 
-        /* УПРАВЛЕНИЕ */
+        /* УПРАВЛЕНИЕ (КНОПКИ ВНИЗУ СТРАНИЦЫ) */
         .nav-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-top: 15px;
-            padding-top: 10px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(93, 64, 55, 0.1);
         }
 
         .nav-btn {
             background: none;
             border: 1px solid rgba(93, 64, 55, 0.3);
             color: #5d4037;
-            padding: 6px 15px;
+            padding: 8px 18px;
             border-radius: 12px;
             font-size: 13px;
             font-family: inherit;
+            cursor: pointer;
         }
+
+        .nav-btn:active { background: rgba(93, 64, 55, 0.05); }
 
         .page-num { font-size: 11px; color: #8b6d5c; letter-spacing: 1px; }
 
@@ -166,7 +180,8 @@
             font-size: 28px;
             color: #5d4037;
             text-align: center;
-            margin-top: 20px;
+            margin-top: 15px;
+            display: block;
         }
     </style>
 </head>
@@ -195,20 +210,18 @@
     <div id="scr3" class="screen hidden">
         <div class="book-wrapper">
             
-            <!-- PAGE 0 (Cover) -->
             <div class="page page-cover active" id="p0">
                 <h1>E & E</h1>
                 <p>SEVEN MONTHS</p>
                 <div style="margin-top: 40px;">
-                    <button class="nav-btn" style="color: var(--gold); border-color: var(--gold);" onclick="next()">Открыть письмо</button>
+                    <button class="nav-btn" style="color: var(--gold); border-color: var(--gold); padding: 10px 25px;" onclick="next()">Открыть письмо</button>
                 </div>
             </div>
 
-            <!-- PAGE 1 -->
             <div class="page" id="p1">
                 <div class="text-box">
                     Нам 7 месяцев, не могу в это поверить... <br><br>
-                    И вроде бы это просто цифра, но если честно, внутри ощущается так, будто мы прожили намного больше, чем половину года. Это уже не про время, это про нас. Про всё, что между нами было, про эмоции, про ссоры, про примирения, про моменты, когда мы почти ломались, но всё равно оставались друг у друга.
+                    И вроде бы это просто цифра, но если честно, внутри ощущается так, будто мы прожили намного больше, чем половину года. Это уже не про время, это про нас. Про всё, что между нами было, про моменты, когда мы почти ломались, но всё равно оставались друг у друга.
                 </div>
                 <div class="nav-controls">
                     <button class="nav-btn" onclick="prev()">Назад</button>
@@ -217,7 +230,6 @@
                 </div>
             </div>
 
-            <!-- PAGE 2 -->
             <div class="page" id="p2">
                 <div class="text-box">
                     Мы не идеальные. И даже близко нет. У нас были ссоры, иногда очень тяжёлые, когда слова могли ранить, когда казалось, что мы на грани. <br><br> Но потом происходило одно и то же. Мы скучали. И вот это чувство всегда было сильнее гордости, сильнее обид. Мы возвращались друг к другу. И каждый раз это было как будто заново, но уже глубже.
@@ -229,7 +241,6 @@
                 </div>
             </div>
 
-            <!-- PAGE 3 -->
             <div class="page" id="p3">
                 <h2>Обнимашки</h2>
                 <div class="text-box">
@@ -242,10 +253,9 @@
                 </div>
             </div>
 
-            <!-- PAGE 4 -->
             <div class="page" id="p4">
                 <div class="text-box">
-                    Когда я поцеловал ручки моей малюськи, это был бережный, трепетный жест. В этом было всё: забота, нежность и то чувство, когда человек настолько важен, что любое прикосновение становится особенным. <br><br> Или те обнимашки в подъезде математики... Я успел приехать, и в ту секунду, когда ты оказалась в моих руках, всё стало на свои места.
+                    Когда я поцеловал ручки моей малюськи, это был бережный жест. В этом было всё: забота, нежность и то чувство, когда человек настолько важен, что любое прикосновение становится особенным. <br><br> Или те обнимашки в подъезде математики... Я успел приехать, и в ту секунду, когда ты оказалась в моих руках, всё стало на свои места.
                 </div>
                 <div class="nav-controls">
                     <button class="nav-btn" onclick="prev()">Назад</button>
@@ -254,7 +264,6 @@
                 </div>
             </div>
 
-            <!-- PAGE 5 -->
             <div class="page" id="p5">
                 <div class="text-box">
                     И ещё обнимашки перед Ляман. Мы обнимались, а она там так удивилась. Мы потом это обсуждали) Но само объятие было настоящим, живым, немного неловким, но очень нашим. <br><br>
@@ -267,11 +276,10 @@
                 </div>
             </div>
 
-            <!-- PAGE 6 -->
             <div class="page" id="p6">
                 <div class="text-box">
                     С тобой я могу быть собой. Со всеми своими ошибками, ревностью, странностями. И ты всё это видела, и всё равно осталась рядом. <br><br>
-                    Я правда очень ценю тебя. Иногда мне стыдно за свои поступки, за моменты, когда я делаю тебе больно. Но ты не уходишь. И мы не ломаемся, а пытаемся говорить и исправлять.
+                    Я правда очень ценю тебя. Иногда мне стыдно за свои поступки, когда я делаю тебе больно. Но ты не уходишь. И мы не ломаемся, а пытаемся говорить и исправлять.
                 </div>
                 <div class="nav-controls">
                     <button class="nav-btn" onclick="prev()">Назад</button>
@@ -280,7 +288,6 @@
                 </div>
             </div>
 
-            <!-- PAGE 7 -->
             <div class="page" id="p7">
                 <div class="text-box">
                     Конец декабря и январь были важными. Мы реально могли потеряться. Но мы не отпустили. <br><br> Сейчас мы уже другие. Более настоящие. Мы умеем говорить и стараемся понимать друг друга. Даже то, что мы иногда меньше общаемся, не уменьшает то, что между нами есть. Основа не в сообщениях, а в том, что мы значим друг для друга.
@@ -292,11 +299,10 @@
                 </div>
             </div>
 
-            <!-- PAGE 8 -->
             <div class="page" id="p8">
                 <div class="text-box">
                     Я думаю о будущем. Дом, жизнь, свадьба — это уже не фантазия, это дорога, по которой мы идём. <br><br>
-                    Нам 7 месяцев, но это только начало большой истории. Я не хочу терять то, что у нас есть. Я верю в нас.
+                    Нам 7 месяцев, но это только начало большой истории. Я верю в нас.
                     <div class="signature">С любовью твой маленький мальчик🤍</div>
                 </div>
                 <div class="nav-controls">
@@ -324,7 +330,7 @@
         }
 
         let cur = 0;
-        const total = 9; // Всего страниц включая обложку
+        const total = 9;
 
         function update() {
             document.querySelectorAll('.page').forEach((p, i) => {
