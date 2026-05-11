@@ -2,34 +2,30 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Diary of Love: E + E</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-color: #fff5f2;
+            --accent-color: #d4a391;
+            --text-main: #4a342e;
+            --card-bg: rgba(255, 255, 255, 0.8);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
             height: 100vh;
             overflow: hidden;
-            background: radial-gradient(circle at center, #2c1a1a, #0f0a0a);
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1ca 100%);
             font-family: 'Cormorant Garamond', serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: white;
         }
 
-        .glow {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: rgba(215, 163, 143, 0.05);
-            filter: blur(100px);
-            border-radius: 50%;
-            animation: float 8s ease-in-out infinite;
-        }
-
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
-
+        /* Screens */
         .screen {
             position: absolute;
             width: 100%;
@@ -37,254 +33,271 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.6s ease;
             padding: 20px;
+            z-index: 5;
         }
 
-        .hidden { opacity: 0; pointer-events: none; transform: scale(0.9); }
+        .hidden { opacity: 0; pointer-events: none; }
 
-        .card {
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid white;
+            border-radius: 30px;
+            padding: 40px 25px;
             width: 100%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(215, 163, 143, 0.2);
-            backdrop-filter: blur(15px);
-            border-radius: 40px;
-            padding: 50px 30px;
+            max-width: 350px;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(184, 124, 102, 0.2);
         }
 
-        h1 { font-family: 'Great Vibes', cursive; font-size: 50px; color: #d7a38f; margin-bottom: 20px; }
-        p { font-size: 20px; color: #e2d1ca; margin-bottom: 30px; line-height: 1.4; }
+        h1 { font-family: 'Great Vibes', cursive; font-size: 50px; color: var(--accent-color); margin-bottom: 15px; }
+        p { font-size: 20px; color: var(--text-main); margin-bottom: 25px; }
 
         input {
             width: 100%;
-            padding: 18px;
-            border: 1px solid rgba(215, 163, 143, 0.3);
-            border-radius: 20px;
-            background: rgba(0,0,0,0.2);
-            color: white;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            margin-bottom: 15px;
             text-align: center;
             font-size: 18px;
-            margin-bottom: 20px;
+            background: white;
         }
 
         button {
             width: 100%;
-            padding: 18px;
+            padding: 15px;
             border: none;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #8b5e4f, #5b3a33);
-            color: #fff;
+            border-radius: 15px;
+            background: var(--accent-color);
+            color: white;
             font-size: 18px;
+            font-family: inherit;
             cursor: pointer;
-            transition: 0.3s;
-            font-family: 'Cormorant Garamond', serif;
-            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(212, 163, 145, 0.4);
         }
 
-        button:hover { background: linear-gradient(135deg, #a67362, #754d42); }
+        /* The Book */
+        .book-wrapper {
+            width: 90vw;
+            max-width: 400px;
+            height: 75vh;
+            position: relative;
+            perspective: 1500px;
+        }
 
-        /* BOOK STYLING */
-        .book-container { perspective: 2000px; width: 100%; max-width: 420px; height: 80vh; }
-        .book { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: 1.5s; }
-        
-        .cover {
+        .book {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        .book.open { transform: translateX(0); }
+
+        .page-node {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #4a2c2c, #2a1818);
-            border-radius: 20px 30px 30px 20px;
-            border-left: 12px solid #1a0f0f;
-            display: flex;
+            top: 0;
+            left: 0;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+            padding: 35px 25px;
+            display: none;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 10;
-            transform-origin: left;
-            transition: 1.8s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 10px 10px 40px rgba(0,0,0,0.6);
-            padding: 40px;
+            pointer-events: auto;
+            border: 1px solid #f0e6e3;
+        }
+
+        .page-node.active { display: flex; animation: pageIn 0.5s ease; }
+
+        @keyframes pageIn {
+            from { transform: translateX(30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .page-node h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 32px;
+            color: var(--accent-color);
+            margin-bottom: 15px;
             text-align: center;
         }
 
-        /* Декор обложки */
-        .cover::before {
-            content: "";
-            position: absolute;
-            inset: 15px;
-            border: 1px solid rgba(215, 163, 143, 0.3);
-            border-radius: 15px;
-            pointer-events: none;
-        }
-
-        .cover h1 { font-size: 75px; margin: 0; color: #f8d7c7; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .cover .subtitle { font-size: 22px; letter-spacing: 6px; color: #d7a38f; margin-top: 5px; font-weight: 300; }
-        .cover .date-tag { margin-top: 40px; font-size: 18px; opacity: 0.8; font-style: italic; color: #f8d7c7; }
-
-        .book.open .cover { transform: rotateY(-160deg); }
-
-        .pages {
-            position: absolute;
-            width: 98%;
-            height: 98%;
-            top: 1%;
-            left: 1%;
-            background: #fffaf5;
-            border-radius: 15px;
-            color: #2c1a1a;
-            padding: 40px 30px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: inset 5px 0 20px rgba(0,0,0,0.1);
-        }
-
-        .page-content {
+        .text-body {
+            font-size: 19px;
+            line-height: 1.6;
+            color: var(--text-main);
+            text-align: left;
             flex-grow: 1;
-            overflow-y: auto;
-            scrollbar-width: none;
-            padding-bottom: 60px;
         }
-        .page-content::-webkit-scrollbar { display: none; }
 
-        .page { display: none; animation: fadeIn 0.8s forwards; }
-        .page.active { display: block; }
+        .page-footer {
+            font-size: 14px;
+            text-align: center;
+            color: #bbb;
+            margin-top: 10px;
+        }
 
-        .page h2 { font-family: 'Great Vibes', cursive; font-size: 38px; color: #8b5e4f; margin-bottom: 20px; border-bottom: 1px solid #eee; }
-        .page p { font-size: 20px; line-height: 1.7; margin-bottom: 15px; text-align: justify; font-weight: 500; }
+        /* Cover style */
+        .cover {
+            background: var(--accent-color) !important;
+            color: white;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 10;
+        }
 
-        .nav-buttons {
+        .cover h1 { color: white; font-size: 60px; }
+        .cover p { color: rgba(255,255,255,0.8); letter-spacing: 3px; }
+
+        .hint {
             position: absolute;
             bottom: 20px;
-            left: 30px;
-            right: 30px;
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            color: #d4a391;
+            opacity: 0.7;
+            animation: pulse 2s infinite;
         }
-        .nav-buttons button { padding: 12px; font-size: 16px; background: #8b5e4f; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .error { color: #ffb0b0; margin-top: 10px; font-size: 16px; }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
     </style>
 </head>
 <body>
 
-    <div class="glow"></div>
-
-    <!-- ЭКРАН 1: ПРИВЕТСТВИЕ -->
-    <div class="screen" id="introScreen">
-        <div class="card">
-            <h1>Welcome</h1>
-            <p>Добро пожаловать в нашу историю, которая длится уже 7 месяцев.</p>
-            <button onclick="nextScreen('introScreen', 'passwordScreen')">Продолжить</button>
+    <div class="screen" id="scr-intro">
+        <div class="glass-card">
+            <h1>E + E</h1>
+            <p>Нашей истории сегодня 7 месяцев...</p>
+            <button onclick="nav('scr-intro', 'scr-pass')">Зайти в дневник</button>
         </div>
     </div>
 
-    <!-- ЭКРАН 2: ПАРОЛЬ -->
-    <div class="screen hidden" id="passwordScreen">
-        <div class="card">
-            <h1>Secret</h1>
-            <p>Введите дату, с которой всё началось</p>
-            <input type="password" id="passwordInput" placeholder="ДДММГГ">
-            <button onclick="checkPassword()">Открыть дневник</button>
-            <div class="error" id="errorText"></div>
+    <div class="screen hidden" id="scr-pass">
+        <div class="glass-card">
+            <h1>Пароль</h1>
+            <input type="password" id="pass" placeholder="ДДММГГ">
+            <button onclick="check()">Открыть</button>
+            <p id="err" style="color: #e57373; font-size: 14px; margin-top: 10px;"></p>
         </div>
     </div>
 
-    <!-- ЭКРАН 3: КНИГА -->
-    <div class="screen hidden" id="bookScreen">
-        <div class="book-container">
-            <div class="book" id="book">
-                <div class="cover" onclick="openBook()">
+    <div class="screen hidden" id="scr-book">
+        <div class="book-wrapper" id="swipe-area">
+            <div class="book" id="main-book">
+                
+                <!-- COVER -->
+                <div class="page-node active cover" id="p0" onclick="next()">
                     <h1>E + E</h1>
-                    <div class="subtitle">DIARY OF LOVE</div>
-                    <div class="date-tag">7 months of us</div>
-                    <p style="font-size: 14px; margin-top: 20px; opacity: 0.6;">(нажми, чтобы открыть)</p>
+                    <p>DIARY OF LOVE</p>
+                    <div style="margin-top: 20px; font-style: italic;">7 месяцев счастья</div>
+                    <div class="hint">Нажми или свайпни, чтобы открыть</div>
                 </div>
 
-                <div class="pages">
-                    <div class="page-content" id="pageContent">
-                        
-                        <!-- Страница 1 -->
-                        <div class="page active">
-                            <h2>Семь месяцев...</h2>
-                            <p>Элька, балам, вот и наши первые семь месяцев. Совсем скоро исполнится год с того дня, как мы познакомились, и я до сих пор поражаюсь тому, сколько всего значимого произошло за это время.</p>
-                            <p>Знаешь, что мне нравится в нас? Ну, помимо того что ты часто как маленькая девочка обижаешься, а потом соскучишься — это безумно мило. Мне нравится, что после любых обид мы любим друг друга только сильнее.</p>
-                            <p>Я ценю то, как мы планируем будущее. Когда ты веришь в наши мечты, мне становится так тепло на душе. Мне нравится, что иногда ты мне как мама, а иногда я могу быть с тобой как с ребеночком. Мы — целый мир друг для друга.</p>
-                        </div>
-
-                        <!-- Страница 2 -->
-                        <div class="page">
-                            <h2>О самом важном</h2>
-                            <p>Ты как-то спросила: «А не легче ли расстаться?». В чем-то да, у тебя стало бы больше времени. Но отношения — это не про «легче», это испытание нас как пары.</p>
-                            <p>Извини за все неудобства и косяки, которые я причиняю. Я искренне надеюсь, что приношу тебе хоть каплю радости. Ты столько вытерпела ради нас... Как я могу оставить тебя после этого? Мы оба знали, что легко не будет, но мы выбрали этот путь вместе.</p>
-                            <p>Джаным, никогда не извиняйся за свои всплески эмоций. Ты — маленькая, чувствительная девочка, и я всё понимаю. Я твоя опора, я никуда не денусь. Мне даже нравится, когда ты обижаешься, потому что в конце мы всё равно улыбаемся друг другу.</p>
-                        </div>
-
-                        <!-- Страница 3 -->
-                        <div class="page">
-                            <h2>Мой мир в твоих руках</h2>
-                            <p>Твои ночные сообщения — это лучшее, что я могу увидеть утром. Перечитываю их весь день. Если тебе спокойно и безопасно рядом со мной, значит, я всё делаю правильно. Я безусловно приму тебя в любом состоянии.</p>
-                            <p>Помнишь наши первые обнимашки? Я чувствовал, что держу в руках весь мир. Твои маленькие ручки, твои щечки... это были самые искренние моменты. Каждая секунда твоего времени для меня бесценна.</p>
-                            <p>Ты — та самая, с которой я хочу встречать каждое утро в нашем общем доме. Хочу приходить с работы, видеть тебя и нашу дочку, которая будет похожа на нас маленьких. Это и есть мое счастье.</p>
-                        </div>
-
-                        <!-- Страница 4 -->
-                        <div class="page">
-                            <h2>Навсегда твой</h2>
-                            <p>Кто-то скажет, что это просто подростковая любовь, но они не знают, как мы по кирпичику строим свой мир. Я выбрал тебя окончательно и бесповоротно. Если не ты — то никто.</p>
-                            <p>Ты увидела во мне то, чего другие не замечали. Ты — мой «спутник жизни». Что бы ни случилось, я всегда буду по твою сторону. Нас ждут тысячи поцелуев и целая жизнь бок о бок.</p>
-                            <p>Я люблю тебя каждую секунду. Хочешь будь дюшбярой, хочешь тараканом — я люблю в тебе всё. Спасибо твоим родителям за такую чудесную дочку. Я буду хранить твое сердечко вечно.</p>
-                            <p style="text-align: right; font-family: 'Great Vibes'; font-size: 30px; margin-top: 20px;">Навсегда твой, Эльмуся 🤍</p>
-                        </div>
-
+                <!-- PAGE 1 -->
+                <div class="page-node" id="p1">
+                    <h2>Семь месяцев...</h2>
+                    <div class="text-body">
+                        Элька, балам, вот и наши 7 месяцев. Знаешь, что мне нравится в нас? Помимо того, что ты обижаешься как маленькая девочка, а потом пишешь "я пообижалась, но соскучилась" — это безумно мило. После этих обидок мы любим друг друга только сильнее.
                     </div>
-
-                    <div class="nav-buttons">
-                        <button onclick="changePage(-1)">Назад</button>
-                        <button onclick="changePage(1)">Вперед</button>
-                    </div>
+                    <div class="page-footer">Страница 1</div>
                 </div>
+
+                <!-- PAGE 2 -->
+                <div class="page-node" id="p2">
+                    <h2>Про нас</h2>
+                    <div class="text-body">
+                        Мне нравится, как мы планируем будущее. Ты реально в это веришь, и мне от этого так приятно. Иногда ты мне как мама, а иногда я с тобой как с ребеночком — мы дополняем друг друга, и это наше "мы" дороже всего на свете.
+                    </div>
+                    <div class="page-footer">Страница 2</div>
+                </div>
+
+                <!-- PAGE 3 -->
+                <div class="page-node" id="p3">
+                    <h2>О выборе</h2>
+                    <div class="text-body">
+                        Расстаться было бы "легче", но отношения — это не про легкость, это испытание. Извини за все неудобства, которые я причиняю. Я ценю твое терпение. Мы не рассчитывали на идеальность, мы выбрали бороться друг за друга.
+                    </div>
+                    <div class="page-footer">Страница 3</div>
+                </div>
+
+                <!-- PAGE 4 -->
+                <div class="page-node" id="p4">
+                    <h2>Опора</h2>
+                    <div class="text-body">
+                        Джаным, не извиняйся за всплески эмоций. Ты чувствительная и эмоциональная девочка, я всё понимаю. Я твоя опора, я никуда не денусь. Главное, чтобы тебе было спокойно. Я люблю тебя любую.
+                    </div>
+                    <div class="page-footer">Страница 4</div>
+                </div>
+
+                <!-- PAGE 5 -->
+                <div class="page-node" id="p5">
+                    <h2>Мечты</h2>
+                    <div class="text-body">
+                        Хочется поскорее жить в одном доме, просыпаться рядом и никогда не разлучаться. Ты та самая, с которой я хочу встречать каждое утро в статусе твоего мужа. Ты — мой мир, моя булочка и мое будущее.
+                    </div>
+                    <div class="page-footer">Конец. Твой Эльмуся 🤍</div>
+                </div>
+
             </div>
         </div>
     </div>
 
     <script>
-        function nextScreen(current, next) {
-            document.getElementById(current).classList.add('hidden');
-            setTimeout(() => {
-                document.getElementById(next).classList.remove('hidden');
-            }, 600);
+        function nav(from, to) {
+            document.getElementById(from).classList.add('hidden');
+            setTimeout(() => document.getElementById(to).classList.remove('hidden'), 400);
         }
 
-        function checkPassword() {
-            const pass = document.getElementById('passwordInput').value;
-            // Пароль из твоего текста: 201025
-            if(pass === "201025") {
-                nextScreen('passwordScreen', 'bookScreen');
+        function check() {
+            if(document.getElementById('pass').value === '201025') {
+                nav('scr-pass', 'scr-book');
             } else {
-                document.getElementById('errorText').innerText = "Неверная дата, любимая";
+                document.getElementById('err').innerText = "Неверно, попробуй еще раз";
             }
         }
 
-        function openBook() {
-            document.getElementById('book').classList.add('open');
+        let curr = 0;
+        const total = 6; // Количество страниц включая обложку
+
+        function showPage(index) {
+            document.querySelectorAll('.page-node').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById('p' + index);
+            if(target) target.classList.add('active');
         }
 
-        let currentPage = 0;
-        const pages = document.querySelectorAll('.page');
-
-        function changePage(step) {
-            pages[currentPage].classList.remove('active');
-            currentPage += step;
-            if(currentPage < 0) currentPage = 0;
-            if(currentPage >= pages.length) currentPage = pages.length - 1;
-            pages[currentPage].classList.add('active');
-            document.getElementById('pageContent').scrollTop = 0;
+        function next() {
+            if(curr < total - 1) { curr++; showPage(curr); }
         }
+
+        function prev() {
+            if(curr > 0) { curr--; showPage(curr); }
+        }
+
+        // SWIPE LOGIC
+        let startX = 0;
+        const area = document.getElementById('swipe-area');
+
+        area.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+        area.addEventListener('touchend', e => {
+            let endX = e.changedTouches[0].clientX;
+            if(startX - endX > 50) next();
+            if(endX - startX > 50) prev();
+        });
+
+        // Click to next on PC
+        area.addEventListener('click', (e) => {
+            const width = area.offsetWidth;
+            if(e.offsetX > width / 2) next();
+            else prev();
+        });
     </script>
 </body>
 </html>
