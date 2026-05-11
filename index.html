@@ -26,7 +26,6 @@
             perspective: 1000px;
         }
 
-        /* АНИМИРОВАННЫЙ ФОН */
         .bg-particles {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -42,10 +41,10 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.6s ease;
         }
 
-        .hidden { opacity: 0; pointer-events: none; transform: scale(1.1); }
+        .hidden { opacity: 0; pointer-events: none; }
 
         .glass-card {
             background: rgba(255, 255, 255, 0.03);
@@ -57,7 +56,6 @@
             max-width: 340px;
             text-align: center;
             border: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
 
         input {
@@ -71,7 +69,6 @@
             background: #fff;
             color: #000;
             outline: none;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .btn-entry {
@@ -86,11 +83,8 @@
             text-transform: uppercase;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s;
         }
-        .btn-entry:active { transform: scale(0.95); }
 
-        /* КНИГА */
         .book-wrapper {
             width: 100%;
             max-width: 380px;
@@ -107,17 +101,17 @@
             display: none;
             flex-direction: column;
             box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            overflow: hidden;
+            background: var(--page-bg);
+            color: var(--text-dark);
         }
 
-        .page.active { display: flex; animation: pageIn 0.6s ease; }
+        .page.active { display: flex; animation: pageIn 0.5s ease-out; }
 
         @keyframes pageIn {
-            from { opacity: 0; transform: rotateY(-20deg) translateX(30px); }
-            to { opacity: 1; transform: rotateY(0) translateX(0); }
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
-        /* ОБЛОЖКА С ЭФФЕКТОМ ГИРОСКОПА (ЧЕРЕЗ CSS ПЕРЕМЕННЫЕ) */
         .page-cover {
             background: var(--cover-bg);
             background-image: url('https://www.transparenttextures.com/patterns/dark-leather.png');
@@ -137,35 +131,20 @@
             flex-direction: column;
             justify-content: center;
             border-radius: 10px;
-            position: relative;
-            /* Блик */
-            background: linear-gradient(135deg, transparent 45%, rgba(255,255,255,0.1) 50%, transparent 55%);
+            background: linear-gradient(135deg, transparent 45%, rgba(255,255,255,0.08) 50%, transparent 55%);
             background-size: 200% 200%;
-            animation: shine 5s infinite;
+            animation: shine 6s infinite;
         }
 
-        @keyframes shine {
-            0% { background-position: 200% 200%; }
-            100% { background-position: -200% -200%; }
-        }
-
-        .page-inner {
-            background: var(--page-bg);
-            background-image: radial-gradient(circle at 50% 50%, transparent 80%, rgba(0,0,0,0.02) 100%);
-            color: var(--text-dark);
-        }
-
-        /* ПЕЧАТАЮЩИЙСЯ ТЕКСТ */
         .text-box {
-            font-size: 20px;
-            line-height: 1.7;
+            font-size: 19px;
+            line-height: 1.65;
             font-style: italic;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             text-align: center;
-            min-height: 200px;
         }
 
         .nav-controls {
@@ -182,25 +161,15 @@
             font-size: 35px;
             cursor: pointer;
             padding: 10px;
-            opacity: 0.4;
-            transition: opacity 0.3s;
+            opacity: 0.5;
         }
-        .arrow-btn:hover { opacity: 1; }
 
-        /* ТАЙМЕР */
-        .timer-container {
-            margin-top: 20px;
-            font-size: 14px;
-            letter-spacing: 1px;
-            color: var(--text-dark);
-            opacity: 0.8;
-        }
-        .timer-val { font-weight: 600; color: #8e6d5d; }
+        .timer-val { font-weight: 600; color: #8e6d5d; font-size: 18px; display: block; margin-top: 10px; }
 
         .signature {
             font-family: 'Great Vibes', cursive;
             font-size: 34px;
-            text-align: center;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -208,61 +177,53 @@
 
     <div class="bg-particles"></div>
 
+    <!-- Аудио элемент с минусовкой -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.mboxdrive.com/Sting%20-%20Shape%20Of%20My%20Heart%20(Instrumental).mp3" type="audio/mpeg">
+    </audio>
+
     <!-- ЭКРАН 1 -->
     <div id="scr1" class="screen">
         <div class="glass-card">
             <h1 style="font-family: 'Great Vibes'; font-size: 40px; color: var(--gold); margin-bottom: 20px;">For my Mauli</h1>
-            <button class="btn-entry" onclick="initExperience('scr1', 'scr2')">Открыть</button>
+            <button class="btn-entry" onclick="startWithMusic()">Открыть</button>
         </div>
     </div>
 
-    <!-- ЭКРАН 2 (ПАРОЛЬ) -->
+    <!-- ЭКРАН 2 -->
     <div id="scr2" class="screen hidden">
         <div class="glass-card">
-            <h1 style="font-family: 'Great Vibes'; font-size: 35px; color: var(--gold); margin-bottom: 20px;">Our Date</h1>
+            <h1 style="font-family: 'Great Vibes'; font-size: 35px; color: var(--gold); margin-bottom: 20px;">Secret</h1>
             <input type="password" id="pass" placeholder="ДДММГГ" inputmode="numeric">
             <button class="btn-entry" onclick="check()">Войти</button>
             <p id="err" style="color: var(--gold); margin-top: 15px; font-size: 14px;"></p>
         </div>
     </div>
 
-    <!-- ЭКРАН 3 (КНИГА) -->
+    <!-- ЭКРАН 3 -->
     <div id="scr3" class="screen hidden">
         <div class="book-wrapper">
-            
-            <!-- ОБЛОЖКА -->
             <div class="page page-cover active" id="p0">
                 <div class="gold-embossing" id="bookCover">
                     <p style="letter-spacing: 5px; opacity: 0.7; font-size: 12px;">MEMORIES</p>
-                    <h1 style="font-size: 52px;">Diary of Love</h1>
-                    <p style="margin-top: 25px; font-size: 16px; opacity: 0.8;">213 Days of Us</p>
-                    <button class="btn-entry" style="margin-top: 40px; max-width: 160px; align-self: center;" onclick="nextPage()">Открыть</button>
+                    <h1 style="font-size: 52px; font-family: 'Great Vibes';">Diary of Love</h1>
+                    <p style="margin-top: 25px; font-size: 16px; opacity: 0.8;">Seven Months</p>
+                    <button class="btn-entry" style="margin-top: 40px; max-width: 160px; align-self: center;" onclick="nextPage()">Читать</button>
                 </div>
             </div>
-
-            <!-- Страницы генерируются динамически через JS для эффекта печати -->
             <div id="dynamicPages"></div>
-
-            <!-- ФИНАЛ -->
-            <div class="page page-inner" id="pFinal">
+            <div class="page" id="pFinal">
                 <div class="text-box">
                     <div class="signature">С любовью,<br>твой маленький мальчик🤍</div>
-                    <div class="timer-container">
-                        Мы вместе уже:<br>
-                        <span id="timer" class="timer-val">...</span>
-                    </div>
+                    <div style="font-size: 14px; opacity: 0.7;">Мы вместе уже:</div>
+                    <span id="timer" class="timer-val">...</span>
                 </div>
                 <div class="nav-controls" style="justify-content: center;">
                     <button class="arrow-btn" onclick="prevPage()">&#8249;</button>
                 </div>
             </div>
-
         </div>
     </div>
-
-    <!-- АУДИО (Замени ссылки на свои, если хочешь) -->
-    <audio id="bgMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3"></audio>
-    <audio id="flipSound" src="https://www.fesliyanstudios.com/play-mp3/6005"></audio>
 
     <script>
         const texts = [
@@ -285,13 +246,12 @@
         ];
 
         let currentPage = 0;
-        const totalPages = texts.length + 2; // + обложка и финал
+        const totalPages = texts.length + 2;
 
-        // 1. Инициализация аудио и переход
-        function initExperience(f, t) {
-            document.getElementById('bgMusic').volume = 0.3;
-            document.getElementById('bgMusic').play().catch(() => {});
-            go(f, t);
+        function startWithMusic() {
+            const audio = document.getElementById('bgMusic');
+            audio.play().catch(e => console.log("Audio play blocked"));
+            go('scr1', 'scr2');
         }
 
         function go(f, t) {
@@ -299,7 +259,6 @@
             document.getElementById(t).classList.remove('hidden');
         }
 
-        // 2. Проверка пароля + вибрация
         function check() {
             if(document.getElementById('pass').value === '201025') {
                 if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
@@ -312,15 +271,15 @@
             }
         }
 
-        // 3. Сборка страниц
         function buildPages() {
             const container = document.getElementById('dynamicPages');
+            container.innerHTML = '';
             texts.forEach((text, i) => {
                 const div = document.createElement('div');
-                div.className = 'page page-inner';
+                div.className = 'page';
                 div.id = `p${i+1}`;
                 div.innerHTML = `
-                    <div class="text-box" id="typewriter${i+1}"></div>
+                    <div class="text-box">${text}</div>
                     <div class="nav-controls">
                         <button class="arrow-btn" onclick="prevPage()">&#8249;</button>
                         <button class="arrow-btn" onclick="nextPage()">&#8250;</button>
@@ -330,77 +289,37 @@
             });
         }
 
-        // 4. Эффект печати
-        function typeWriter(elementId, text, speed = 40) {
-            const el = document.getElementById(elementId);
-            el.innerHTML = "";
-            let i = 0;
-            function type() {
-                if (i < text.length) {
-                    el.innerHTML += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed);
-                }
-            }
-            type();
-        }
-
-        // 5. Навигация + Звук + Тактильность
         function nextPage() {
-            if(currentPage < totalPages - 1) {
-                currentPage++;
-                updatePage();
-            }
+            if(currentPage < totalPages - 1) { currentPage++; updatePage(); }
         }
 
         function prevPage() {
-            if(currentPage > 0) {
-                currentPage--;
-                updatePage();
-            }
+            if(currentPage > 0) { currentPage--; updatePage(); }
         }
 
         function updatePage() {
-            document.getElementById('flipSound').play();
             if (navigator.vibrate) navigator.vibrate(20);
-
             document.querySelectorAll('.page').forEach((p, i) => {
                 p.classList.toggle('active', i === currentPage);
             });
-
-            // Если это текстовая страница, запускаем печать
-            if(currentPage > 0 && currentPage <= texts.length) {
-                setTimeout(() => {
-                    typeWriter(`typewriter${currentPage}`, texts[currentPage-1]);
-                }, 500);
-            }
-            
-            // Финальная страница
-            if(currentPage === totalPages - 1) {
-                document.getElementById('pFinal').classList.add('active');
-            }
         }
 
-        // 6. Таймер вечности
         function updateTimer() {
             const startDate = new Date('2025-10-20T00:00:00');
             const now = new Date();
             const diff = now - startDate;
-
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
             const mins = Math.floor((diff / 1000 / 60) % 60);
             const secs = Math.floor((diff / 1000) % 60);
-
             document.getElementById('timer').innerHTML = `${days}д ${hours}ч ${mins}м ${secs}с`;
         }
 
-        // 7. Гироскоп для обложки (наклон)
         window.addEventListener('deviceorientation', (e) => {
             const cover = document.getElementById('bookCover');
             if(!cover) return;
-            const x = Math.min(Math.max(e.beta, -20), 20) / 2; // наклон вперед-назад
-            const y = Math.min(Math.max(e.gamma, -20), 20) / 2; // наклон влево-вправо
+            const x = Math.min(Math.max(e.beta, -15), 15) / 2;
+            const y = Math.min(Math.max(e.gamma, -15), 15) / 2;
             cover.style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
         });
     </script>
