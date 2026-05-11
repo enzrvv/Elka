@@ -2,30 +2,36 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Diary of Love: E + E</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>E + E</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #fff5f2;
-            --accent-color: #d4a391;
-            --text-main: #4a342e;
-            --card-bg: rgba(255, 255, 255, 0.8);
+            --accent: #d4a391;
+            --text: #4a342e;
+            --soft-white: #fdfcfb;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none; /* Чтобы не мешало свайпам */
+        }
         
         body {
             height: 100vh;
+            height: -webkit-fill-available;
             overflow: hidden;
-            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1ca 100%);
+            background: linear-gradient(135deg, var(--soft-white) 0%, #e2d1ca 100%);
             font-family: 'Cormorant Garamond', serif;
             display: flex;
             justify-content: center;
             align-items: center;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Screens */
         .screen {
             position: absolute;
             width: 100%;
@@ -33,271 +39,264 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.6s ease;
-            padding: 20px;
-            z-index: 5;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom) 20px;
         }
 
         .hidden { opacity: 0; pointer-events: none; }
 
-        .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid white;
-            border-radius: 30px;
-            padding: 40px 25px;
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 35px;
+            padding: 50px 30px;
             width: 100%;
-            max-width: 350px;
+            max-width: 340px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(184, 124, 102, 0.2);
+            box-shadow: 0 20px 40px rgba(184, 124, 102, 0.15);
+            border: 1px solid rgba(255,255,255,0.5);
         }
 
-        h1 { font-family: 'Great Vibes', cursive; font-size: 50px; color: var(--accent-color); margin-bottom: 15px; }
-        p { font-size: 20px; color: var(--text-main); margin-bottom: 25px; }
-
+        h1 { font-family: 'Great Vibes', cursive; font-size: 50px; color: var(--accent); margin-bottom: 15px; }
+        
         input {
             width: 100%;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 15px;
-            margin-bottom: 15px;
+            padding: 18px;
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 20px;
+            margin-bottom: 20px;
             text-align: center;
             font-size: 18px;
-            background: white;
+            outline: none;
+            background: rgba(255,255,255,0.5);
+            color: var(--text);
+            font-family: inherit;
         }
 
         button {
             width: 100%;
-            padding: 15px;
+            padding: 18px;
             border: none;
-            border-radius: 15px;
-            background: var(--accent-color);
+            border-radius: 20px;
+            background: var(--accent);
             color: white;
             font-size: 18px;
+            font-weight: 600;
             font-family: inherit;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(212, 163, 145, 0.4);
+            box-shadow: 0 10px 20px rgba(212, 163, 145, 0.3);
+            transition: transform 0.2s;
         }
 
-        /* The Book */
-        .book-wrapper {
-            width: 90vw;
-            max-width: 400px;
-            height: 75vh;
-            position: relative;
-            perspective: 1500px;
-        }
+        button:active { transform: scale(0.96); }
 
-        .book {
+        /* BOOK SYSTEM */
+        .book-container {
             width: 100%;
-            height: 100%;
+            max-width: 380px;
+            height: 70vh;
             position: relative;
-            transform-style: preserve-3d;
-            transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
         }
 
-        .book.open { transform: translateX(0); }
-
-        .page-node {
+        .page {
             position: absolute;
             width: 100%;
             height: 100%;
-            top: 0;
-            left: 0;
             background: #fff;
-            border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
-            padding: 35px 25px;
-            display: none;
+            border-radius: 30px;
+            padding: 40px 25px;
+            display: flex;
             flex-direction: column;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.9) translateX(30px);
+        }
+
+        .page.active {
+            opacity: 1;
             pointer-events: auto;
-            border: 1px solid #f0e6e3;
+            transform: scale(1) translateX(0);
         }
 
-        .page-node.active { display: flex; animation: pageIn 0.5s ease; }
-
-        @keyframes pageIn {
-            from { transform: translateX(30px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .page-node h2 {
+        .page h2 {
             font-family: 'Great Vibes', cursive;
-            font-size: 32px;
-            color: var(--accent-color);
-            margin-bottom: 15px;
+            font-size: 36px;
+            color: var(--accent);
+            margin-bottom: 20px;
             text-align: center;
         }
 
-        .text-body {
-            font-size: 19px;
-            line-height: 1.6;
-            color: var(--text-main);
-            text-align: left;
+        .content {
+            font-size: 21px;
+            line-height: 1.5;
+            color: var(--text);
             flex-grow: 1;
+            text-align: left;
+            font-weight: 400;
+            hyphens: auto;
         }
 
-        .page-footer {
-            font-size: 14px;
-            text-align: center;
-            color: #bbb;
-            margin-top: 10px;
-        }
-
-        /* Cover style */
-        .cover {
-            background: var(--accent-color) !important;
+        .cover-page {
+            background: var(--accent);
             color: white;
             justify-content: center;
             align-items: center;
             text-align: center;
-            z-index: 10;
         }
+        .cover-page h1 { color: white; font-size: 70px; }
 
-        .cover h1 { color: white; font-size: 60px; }
-        .cover p { color: rgba(255,255,255,0.8); letter-spacing: 3px; }
+        .footer-info {
+            font-size: 14px;
+            color: #d1d1d1;
+            text-align: center;
+            margin-top: 15px;
+            letter-spacing: 2px;
+        }
 
         .hint {
             position: absolute;
-            bottom: 20px;
+            bottom: 40px;
             width: 100%;
             text-align: center;
-            font-size: 14px;
-            color: #d4a391;
-            opacity: 0.7;
-            animation: pulse 2s infinite;
+            font-size: 15px;
+            color: var(--accent);
+            animation: pulse 2.5s infinite;
+            font-weight: 500;
         }
-        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; transform: translateX(0); } 50% { opacity: 1; transform: translateX(5px); } }
     </style>
 </head>
 <body>
 
-    <div class="screen" id="scr-intro">
-        <div class="glass-card">
-            <h1>E + E</h1>
-            <p>Нашей истории сегодня 7 месяцев...</p>
-            <button onclick="nav('scr-intro', 'scr-pass')">Зайти в дневник</button>
+    <!-- SCREEN 1: THE SURPRISE -->
+    <div class="screen" id="s1">
+        <div class="card">
+            <h1 style="font-size: 40px;">Balam...</h1>
+            <p style="margin-bottom: 30px; color: #998c88; font-size: 18px;">Для тебя есть небольшой подарок</p>
+            <button onclick="go('s1', 's2')">Нажми сюда</button>
         </div>
     </div>
 
-    <div class="screen hidden" id="scr-pass">
-        <div class="glass-card">
-            <h1>Пароль</h1>
-            <input type="password" id="pass" placeholder="ДДММГГ">
+    <!-- SCREEN 2: THE KEY -->
+    <div class="screen hidden" id="s2">
+        <div class="card">
+            <h1>Secret</h1>
+            <p style="font-size: 16px; margin-bottom: 15px; color: #888;">Введи дату нашего начала</p>
+            <input type="password" id="p-input" inputmode="numeric" placeholder="ДДММГГ">
             <button onclick="check()">Открыть</button>
-            <p id="err" style="color: #e57373; font-size: 14px; margin-top: 10px;"></p>
+            <p id="msg" style="color: var(--accent); font-size: 14px; margin-top: 10px;"></p>
         </div>
     </div>
 
-    <div class="screen hidden" id="scr-book">
-        <div class="book-wrapper" id="swipe-area">
-            <div class="book" id="main-book">
-                
-                <!-- COVER -->
-                <div class="page-node active cover" id="p0" onclick="next()">
-                    <h1>E + E</h1>
-                    <p>DIARY OF LOVE</p>
-                    <div style="margin-top: 20px; font-style: italic;">7 месяцев счастья</div>
-                    <div class="hint">Нажми или свайпни, чтобы открыть</div>
-                </div>
-
-                <!-- PAGE 1 -->
-                <div class="page-node" id="p1">
-                    <h2>Семь месяцев...</h2>
-                    <div class="text-body">
-                        Элька, балам, вот и наши 7 месяцев. Знаешь, что мне нравится в нас? Помимо того, что ты обижаешься как маленькая девочка, а потом пишешь "я пообижалась, но соскучилась" — это безумно мило. После этих обидок мы любим друг друга только сильнее.
-                    </div>
-                    <div class="page-footer">Страница 1</div>
-                </div>
-
-                <!-- PAGE 2 -->
-                <div class="page-node" id="p2">
-                    <h2>Про нас</h2>
-                    <div class="text-body">
-                        Мне нравится, как мы планируем будущее. Ты реально в это веришь, и мне от этого так приятно. Иногда ты мне как мама, а иногда я с тобой как с ребеночком — мы дополняем друг друга, и это наше "мы" дороже всего на свете.
-                    </div>
-                    <div class="page-footer">Страница 2</div>
-                </div>
-
-                <!-- PAGE 3 -->
-                <div class="page-node" id="p3">
-                    <h2>О выборе</h2>
-                    <div class="text-body">
-                        Расстаться было бы "легче", но отношения — это не про легкость, это испытание. Извини за все неудобства, которые я причиняю. Я ценю твое терпение. Мы не рассчитывали на идеальность, мы выбрали бороться друг за друга.
-                    </div>
-                    <div class="page-footer">Страница 3</div>
-                </div>
-
-                <!-- PAGE 4 -->
-                <div class="page-node" id="p4">
-                    <h2>Опора</h2>
-                    <div class="text-body">
-                        Джаным, не извиняйся за всплески эмоций. Ты чувствительная и эмоциональная девочка, я всё понимаю. Я твоя опора, я никуда не денусь. Главное, чтобы тебе было спокойно. Я люблю тебя любую.
-                    </div>
-                    <div class="page-footer">Страница 4</div>
-                </div>
-
-                <!-- PAGE 5 -->
-                <div class="page-node" id="p5">
-                    <h2>Мечты</h2>
-                    <div class="text-body">
-                        Хочется поскорее жить в одном доме, просыпаться рядом и никогда не разлучаться. Ты та самая, с которой я хочу встречать каждое утро в статусе твоего мужа. Ты — мой мир, моя булочка и мое будущее.
-                    </div>
-                    <div class="page-footer">Конец. Твой Эльмуся 🤍</div>
-                </div>
-
+    <!-- SCREEN 3: THE BOOK -->
+    <div class="screen hidden" id="s3">
+        <div class="book-container" id="book-area">
+            
+            <div class="page active cover-page" id="pg0">
+                <h1>E + E</h1>
+                <p style="letter-spacing: 5px; opacity: 0.9;">7 МЕСЯЦЕВ</p>
+                <div class="hint">Листай вправо →</div>
             </div>
+
+            <div class="page" id="pg1">
+                <h2>Наши чувства</h2>
+                <div class="content">
+                    Элька, балам, вот и наши первые семь месяцев. Знаешь, что мне больше всего нравится в нас? Помимо того, что ты обижаешься как маленькая девочка, а потом пишешь: «я пообижалась, но соскучилась». Это безумно мило. После этих обидок мы любим друг друга только сильнее.
+                </div>
+                <div class="footer-info">I / V</div>
+            </div>
+
+            <div class="page" id="pg2">
+                <h2>О нас</h2>
+                <div class="content">
+                    Мне безумно нравится, как мы планируем будущее. Когда ты в это веришь, мне становится так приятно. Иногда ты мне как мама, а иногда я с тобой как с ребеночком — мы дополняем друг друга. Я не всегда могу это объяснить, но это «мы» — самое дорогое.
+                </div>
+                <div class="footer-info">II / V</div>
+            </div>
+
+            <div class="page" id="pg3">
+                <h2>Про выбор</h2>
+                <div class="content">
+                    Ты спросила: «не легче ли расстаться?». Может и легче, но отношения — это не про легкость, это испытание. Извини за все неудобства, я ценю твое терпение. Ты столько вытерпела ради нас... Как я могу оставить тебя после этого? Мы всё пройдем вместе.
+                </div>
+                <div class="footer-info">III / V</div>
+            </div>
+
+            <div class="page" id="pg4">
+                <h2>Моя опора</h2>
+                <div class="content">
+                    Не извиняйся за свои эмоции. Ты чувствительная девочка, я всё понимаю. Я твоя опора, я никуда не денусь. Плакать и уходить я не собираюсь. Мне нравится, когда ты обижаешься, ведь в конце мы всё равно вместе, улыбаемся и радуемся.
+                </div>
+                <div class="footer-info">IV / V</div>
+            </div>
+
+            <div class="page" id="pg5">
+                <h2>Навсегда</h2>
+                <div class="content">
+                    Ты — мой «спутник жизни». Уйти от тебя для меня никогда не будет вариантом. Я выбрал тебя окончательно. Нас ждут тысячи поцелуев и целая жизнь рядом. Я люблю тебя, булочка! 🤍
+                </div>
+                <div class="footer-info">Твой Эльмуся</div>
+            </div>
+
         </div>
     </div>
 
     <script>
-        function nav(from, to) {
-            document.getElementById(from).classList.add('hidden');
-            setTimeout(() => document.getElementById(to).classList.remove('hidden'), 400);
+        function go(f, t) {
+            document.getElementById(f).classList.add('hidden');
+            setTimeout(() => document.getElementById(t).classList.remove('hidden'), 500);
         }
 
         function check() {
-            if(document.getElementById('pass').value === '201025') {
-                nav('scr-pass', 'scr-book');
+            const val = document.getElementById('p-input').value;
+            if(val === '201025') {
+                go('s2', 's3');
             } else {
-                document.getElementById('err').innerText = "Неверно, попробуй еще раз";
+                document.getElementById('msg').innerText = "Попробуй еще раз, балам";
             }
         }
 
-        let curr = 0;
-        const total = 6; // Количество страниц включая обложку
+        let cur = 0;
+        const max = 5;
 
-        function showPage(index) {
-            document.querySelectorAll('.page-node').forEach(p => p.classList.remove('active'));
-            const target = document.getElementById('p' + index);
-            if(target) target.classList.add('active');
+        function update() {
+            document.querySelectorAll('.page').forEach((p, i) => {
+                p.classList.remove('active');
+                if(i === cur) p.classList.add('active');
+            });
         }
 
-        function next() {
-            if(curr < total - 1) { curr++; showPage(curr); }
-        }
-
-        function prev() {
-            if(curr > 0) { curr--; showPage(curr); }
-        }
-
-        // SWIPE LOGIC
-        let startX = 0;
-        const area = document.getElementById('swipe-area');
-
-        area.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-        area.addEventListener('touchend', e => {
-            let endX = e.changedTouches[0].clientX;
-            if(startX - endX > 50) next();
-            if(endX - startX > 50) prev();
-        });
-
-        // Click to next on PC
+        const area = document.getElementById('book-area');
+        
+        // Перелистывание кликом (для удобства)
         area.addEventListener('click', (e) => {
-            const width = area.offsetWidth;
-            if(e.offsetX > width / 2) next();
-            else prev();
+            const rect = area.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            if(x > rect.width / 2) {
+                if(cur < max) cur++;
+            } else {
+                if(cur > 0) cur--;
+            }
+            update();
         });
+
+        // Свайпы (специально для iPhone)
+        let touchStartX = 0;
+        area.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX, {passive: true});
+        area.addEventListener('touchend', e => {
+            let touchEndX = e.changedTouches[0].clientX;
+            if (touchStartX - touchEndX > 60) { if(cur < max) cur++; }
+            if (touchEndX - touchStartX > 60) { if(cur > 0) cur--; }
+            update();
+        }, {passive: true});
+
+        // Блокировка стандартных жестов Safari
+        document.addEventListener('touchmove', function(e) {
+            if (e.touches.length > 1) e.preventDefault();
+        }, {passive: false});
     </script>
 </body>
 </html>
