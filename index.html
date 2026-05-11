@@ -33,7 +33,6 @@
             z-index: -2;
         }
 
-        /* Контейнер для падающих слов */
         #bg-flow {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -43,12 +42,13 @@
 
         .flow-item {
             position: absolute;
-            color: rgba(212, 163, 145, 0.15);
+            color: rgba(212, 163, 145, 0.4); 
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
             white-space: nowrap;
             user-select: none;
             will-change: transform;
+            font-weight: 500;
         }
 
         .screen {
@@ -62,14 +62,14 @@
         .hidden { opacity: 0; pointer-events: none; }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
             border-radius: 40px;
             padding: 40px 30px;
             width: 100%;
             max-width: 340px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         input {
@@ -208,7 +208,7 @@
 
             <div class="page" id="pFinal">
                 <div class="text-box">
-                    <div class="signature">С любовью,<br>твой маленький мальчик🤍</div>
+                    <div class="signature">С любовью,<br>твой маленький мальчик!</div>
                 </div>
                 <div class="nav-controls" style="justify-content: center;">
                     <button class="arrow-btn" onclick="prevPage()">&#8249;</button>
@@ -239,8 +239,6 @@
 
         let currentPage = 0;
         const totalPages = texts.length + 2;
-
-        // Генерация падающего фона
         const words = ["E🤍", "forever"];
         const flowContainer = document.getElementById('bg-flow');
 
@@ -248,36 +246,23 @@
             const item = document.createElement('div');
             item.className = 'flow-item';
             item.innerText = words[Math.floor(Math.random() * words.length)];
-            
-            const startX = Math.random() * window.innerWidth;
-            const size = 15 + Math.random() * 25;
-            const duration = 8000 + Math.random() * 7000; // 8-15 секунд на пролет
-            
+            const startX = Math.random() * (window.innerWidth - 80);
+            const size = 20 + Math.random() * 15;
             item.style.left = startX + 'px';
             item.style.fontSize = size + 'px';
             item.style.top = '-50px';
-            item.style.opacity = 0.05 + Math.random() * 0.15;
-            
             flowContainer.appendChild(item);
-
             const animation = item.animate([
                 { transform: 'translateY(0)' },
                 { transform: `translateY(${window.innerHeight + 100}px)` }
             ], {
-                duration: duration,
+                duration: 12000,
                 easing: 'linear'
             });
-
-            animation.onfinish = () => {
-                item.remove();
-                createFlowItem(); // Бесконечный цикл: один удалился, другой создался
-            };
+            animation.onfinish = () => { item.remove(); };
         }
 
-        // Запуск фона (создаем 15 элементов сразу)
-        for(let i=0; i<15; i++) {
-            setTimeout(createFlowItem, Math.random() * 10000);
-        }
+        setInterval(createFlowItem, 1500);
 
         function go(f, t) {
             document.getElementById(f).classList.add('hidden');
