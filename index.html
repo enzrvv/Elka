@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>For E.</title>
+    <title>Letter for E.</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --cover-bg: #2c1e1a;
-            --gold: #d4a391;
-            --page-bg: #fffcf9;
-            --text-dark: #3d302d;
+            --paper: #e8d5b7;
+            --ink: #2c1e1a;
+            --gold: #b58371;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
             height: 100vh;
-            background: #1a1210;
+            background: #1a1210; /* Темный фон вокруг для контраста */
             font-family: 'Cormorant Garamond', serif;
             display: flex;
             justify-content: center;
@@ -43,14 +42,14 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-radius: 40px;
-            padding: 50px 30px;
+            padding: 40px 30px;
             width: 100%;
             max-width: 340px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .glass-card h1 { font-family: 'Great Vibes', cursive; font-size: 42px; color: var(--gold); margin-bottom: 35px; }
+        .glass-card h1 { font-family: 'Great Vibes', cursive; font-size: 38px; color: var(--gold); margin-bottom: 30px; }
         
         input {
             width: 100%;
@@ -59,10 +58,9 @@
             border-radius: 15px;
             margin-bottom: 20px;
             text-align: center;
-            font-size: 22px;
-            background: rgba(255,255,255,0.95);
+            font-size: 20px;
+            background: #fdfcfb;
             color: #000;
-            outline: none;
         }
 
         .btn-entry {
@@ -73,17 +71,15 @@
             background: var(--gold);
             color: white;
             font-size: 14px;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            font-weight: 600;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
         /* КНИГА */
         .book-wrapper {
             width: 100%;
             max-width: 380px;
-            height: 80vh;
+            height: 85vh;
             position: relative;
         }
 
@@ -91,85 +87,87 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            border-radius: 30px;
+            background-color: #f2e8d5;
+            /* Текстура старой бумаги */
+            background-image: url('https://www.transparenttextures.com/patterns/old-paper.png');
+            border-radius: 5px;
             padding: 40px 25px;
             display: none;
             flex-direction: column;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #d4c4a8;
         }
 
-        .page.active { display: flex; animation: slideUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        /* Эффект неровных краев старой бумаги */
+        .page::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            box-shadow: inset 0 0 50px rgba(139, 69, 19, 0.15);
+            pointer-events: none;
         }
+
+        .page.active { display: flex; animation: fadeIn 0.8s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* ОБЛОЖКА */
         .page-cover {
-            background: var(--cover-bg);
-            background-image: radial-gradient(circle at 50% 50%, rgba(212, 163, 145, 0.08) 0%, transparent 70%);
+            background: #2c1e1a !important; /* Тёмная кожаная обложка */
             color: var(--gold);
             justify-content: center;
             align-items: center;
             text-align: center;
         }
-        .page-cover h1 { font-size: 80px; margin-bottom: 10px; }
-        .page-cover p { letter-spacing: 6px; font-size: 12px; opacity: 0.6; }
+        .page-cover h1 { font-size: 70px; }
+        .page-cover p { letter-spacing: 5px; font-size: 14px; margin-top: 10px; }
 
-        /* СТРАНИЦЫ ВНУТРИ */
-        .page-inner {
-            background: var(--page-bg);
-            color: var(--text-dark);
-        }
-
-        .page-inner h2 {
+        /* ВНУТРЕННИЕ СТРАНИЦЫ */
+        .page h2 {
             font-family: 'Great Vibes', cursive;
-            font-size: 38px;
-            color: #8c6a5d;
-            margin-bottom: 25px;
+            font-size: 32px;
+            color: #5d4037;
+            margin-bottom: 20px;
             text-align: center;
         }
 
         .text-box {
-            font-size: 21px;
-            line-height: 1.6;
+            font-size: 18.5px;
+            line-height: 1.55;
+            color: var(--ink);
             font-style: italic;
             flex-grow: 1;
+            overflow-y: auto;
         }
 
-        /* КНОПКИ НАВИГАЦИИ */
+        /* УПРАВЛЕНИЕ */
         .nav-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(140, 106, 93, 0.1);
+            margin-top: 15px;
+            padding-top: 10px;
         }
 
         .nav-btn {
             background: none;
-            border: 1px solid rgba(140, 106, 93, 0.3);
-            color: #8c6a5d;
-            padding: 8px 20px;
-            border-radius: 20px;
+            border: 1px solid rgba(93, 64, 55, 0.3);
+            color: #5d4037;
+            padding: 6px 15px;
+            border-radius: 12px;
+            font-size: 13px;
             font-family: inherit;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.3s;
         }
 
-        .nav-btn:active { background: rgba(140, 106, 93, 0.1); }
+        .page-num { font-size: 11px; color: #8b6d5c; letter-spacing: 1px; }
 
-        .nav-btn.gold-style {
-            border-color: var(--gold);
-            color: var(--gold);
+        .signature {
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            color: #5d4037;
+            text-align: center;
+            margin-top: 20px;
         }
-
-        .page-num { font-size: 12px; color: #bbb; letter-spacing: 1px; }
-
     </style>
 </head>
 <body>
@@ -177,7 +175,7 @@
     <!-- SCREEN 1 -->
     <div id="scr1" class="screen">
         <div class="glass-card">
-            <h1>A little gift...</h1>
+            <h1>Something special</h1>
             <button class="btn-entry" onclick="go('scr1', 'scr2')">Открыть</button>
         </div>
     </div>
@@ -186,7 +184,7 @@
     <div id="scr2" class="screen hidden">
         <div class="glass-card">
             <h1>Secret</h1>
-            <p style="color: #999; margin-bottom: 20px; font-size: 16px;">Введи нашу дату</p>
+            <p style="color: #999; margin-bottom: 20px;">Дата нашего начала</p>
             <input type="password" id="pass" placeholder="ДДММГГ" inputmode="numeric">
             <button class="btn-entry" onclick="check()">Продолжить</button>
             <p id="err" style="color: var(--gold); margin-top: 15px; font-size: 14px;"></p>
@@ -197,64 +195,114 @@
     <div id="scr3" class="screen hidden">
         <div class="book-wrapper">
             
-            <!-- Обложка -->
+            <!-- PAGE 0 (Cover) -->
             <div class="page page-cover active" id="p0">
                 <h1>E & E</h1>
                 <p>SEVEN MONTHS</p>
                 <div style="margin-top: 40px;">
-                    <button class="nav-btn gold-style" onclick="next()">Открыть письмо</button>
+                    <button class="nav-btn" style="color: var(--gold); border-color: var(--gold);" onclick="next()">Открыть письмо</button>
                 </div>
             </div>
 
-            <!-- Страница 1 -->
-            <div class="page page-inner" id="p1">
-                <h2>Про нежность</h2>
+            <!-- PAGE 1 -->
+            <div class="page" id="p1">
                 <div class="text-box">
-                    Семь месяцев — это время, за которое я научился ценить в тебе абсолютно всё. Даже твои обиды, когда ты дуешься как маленькая девочка, стали для меня чем-то родным. Ведь в конце ты всегда признаешься, что соскучилась. Это и есть настоящая близость.
+                    Нам 7 месяцев, не могу в это поверить... <br><br>
+                    И вроде бы это просто цифра, но если честно, внутри ощущается так, будто мы прожили намного больше, чем половину года. Это уже не про время, это про нас. Про всё, что между нами было, про эмоции, про ссоры, про примирения, про моменты, когда мы почти ломались, но всё равно оставались друг у друга.
                 </div>
                 <div class="nav-controls">
                     <button class="nav-btn" onclick="prev()">Назад</button>
-                    <span class="page-num">01 / 04</span>
-                    <button class="nav-btn" onclick="next()">Вперед</button>
+                    <span class="page-num">1 / 8</span>
+                    <button class="nav-btn" onclick="next()">Далее</button>
                 </div>
             </div>
 
-            <!-- Страница 2 -->
-            <div class="page page-inner" id="p2">
-                <h2>Про выбор</h2>
+            <!-- PAGE 2 -->
+            <div class="page" id="p2">
                 <div class="text-box">
-                    Знаешь, сдаться всегда проще. Но мы выбрали другой путь. Отношения — это не когда всё идеально, а когда вы стоите друг за друга, что бы ни случилось. Я не ищу лучшего в мире, я нашел своё в тебе. И это решение я буду принимать каждый день.
+                    Мы не идеальные. И даже близко нет. У нас были ссоры, иногда очень тяжёлые, когда слова могли ранить, когда казалось, что мы на грани. <br><br> Но потом происходило одно и то же. Мы скучали. И вот это чувство всегда было сильнее гордости, сильнее обид. Мы возвращались друг к другу. И каждый раз это было как будто заново, но уже глубже.
                 </div>
                 <div class="nav-controls">
                     <button class="nav-btn" onclick="prev()">Назад</button>
-                    <span class="page-num">02 / 04</span>
-                    <button class="nav-btn" onclick="next()">Вперед</button>
+                    <span class="page-num">2 / 8</span>
+                    <button class="nav-btn" onclick="next()">Далее</button>
                 </div>
             </div>
 
-            <!-- Страница 3 -->
-            <div class="page page-inner" id="p3">
-                <h2>Об опоре</h2>
+            <!-- PAGE 3 -->
+            <div class="page" id="p3">
+                <h2>Обнимашки</h2>
                 <div class="text-box">
-                    Твои эмоции и слезы — это не слабость, это твоя глубина. Я хочу, чтобы ты всегда чувствовала себя за мной, как за каменной стеной. Я здесь, чтобы оберегать твой покой и быть тем местом, где тебе всегда рады и где тебя всегда любят.
+                    Я помню наши обнимашки. Это отдельная часть нашей истории. <br><br> У Crescent это не было просто «мы встретились». Это было как будто весь мир на секунду перестал существовать. Ты пришла с переживаниями, но ты была рядом. Когда мы обнялись, время остановилось. Не было людей вокруг, не было шума. Только ты и я.
                 </div>
                 <div class="nav-controls">
                     <button class="nav-btn" onclick="prev()">Назад</button>
-                    <span class="page-num">03 / 04</span>
-                    <button class="nav-btn" onclick="next()">Вперед</button>
+                    <span class="page-num">3 / 8</span>
+                    <button class="nav-btn" onclick="next()">Далее</button>
                 </div>
             </div>
 
-            <!-- Страница 4 -->
-            <div class="page page-inner" id="p4">
-                <h2>О будущем</h2>
+            <!-- PAGE 4 -->
+            <div class="page" id="p4">
                 <div class="text-box">
-                    Я часто представляю наш общий дом и то, как мы будем просыпаться вместе. Ты — мой спутник жизни, и впереди у нас еще бесконечное количество таких месяцев. Я люблю тебя, моя булочка. Спасибо за эти 7 месяцев счастья.
+                    Когда я поцеловал ручки моей малюськи, это был бережный, трепетный жест. В этом было всё: забота, нежность и то чувство, когда человек настолько важен, что любое прикосновение становится особенным. <br><br> Или те обнимашки в подъезде математики... Я успел приехать, и в ту секунду, когда ты оказалась в моих руках, всё стало на свои места.
                 </div>
                 <div class="nav-controls">
                     <button class="nav-btn" onclick="prev()">Назад</button>
-                    <span class="page-num">Навсегда</span>
-                    <span style="width: 60px;"></span>
+                    <span class="page-num">4 / 8</span>
+                    <button class="nav-btn" onclick="next()">Далее</button>
+                </div>
+            </div>
+
+            <!-- PAGE 5 -->
+            <div class="page" id="p5">
+                <div class="text-box">
+                    И ещё обнимашки перед Ляман. Мы обнимались, а она там так удивилась. Мы потом это обсуждали) Но само объятие было настоящим, живым, немного неловким, но очень нашим. <br><br>
+                    И наши поцелуи... Щёчки, ручки, голова. Каждый такой момент для меня как маленькое тепло, которое остаётся внутри надолго.
+                </div>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prev()">Назад</button>
+                    <span class="page-num">5 / 8</span>
+                    <button class="nav-btn" onclick="next()">Далее</button>
+                </div>
+            </div>
+
+            <!-- PAGE 6 -->
+            <div class="page" id="p6">
+                <div class="text-box">
+                    С тобой я могу быть собой. Со всеми своими ошибками, ревностью, странностями. И ты всё это видела, и всё равно осталась рядом. <br><br>
+                    Я правда очень ценю тебя. Иногда мне стыдно за свои поступки, за моменты, когда я делаю тебе больно. Но ты не уходишь. И мы не ломаемся, а пытаемся говорить и исправлять.
+                </div>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prev()">Назад</button>
+                    <span class="page-num">6 / 8</span>
+                    <button class="nav-btn" onclick="next()">Далее</button>
+                </div>
+            </div>
+
+            <!-- PAGE 7 -->
+            <div class="page" id="p7">
+                <div class="text-box">
+                    Конец декабря и январь были важными. Мы реально могли потеряться. Но мы не отпустили. <br><br> Сейчас мы уже другие. Более настоящие. Мы умеем говорить и стараемся понимать друг друга. Даже то, что мы иногда меньше общаемся, не уменьшает то, что между нами есть. Основа не в сообщениях, а в том, что мы значим друг для друга.
+                </div>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prev()">Назад</button>
+                    <span class="page-num">7 / 8</span>
+                    <button class="nav-btn" onclick="next()">Далее</button>
+                </div>
+            </div>
+
+            <!-- PAGE 8 -->
+            <div class="page" id="p8">
+                <div class="text-box">
+                    Я думаю о будущем. Дом, жизнь, свадьба — это уже не фантазия, это дорога, по которой мы идём. <br><br>
+                    Нам 7 месяцев, но это только начало большой истории. Я не хочу терять то, что у нас есть. Я верю в нас.
+                    <div class="signature">С любовью твой маленький мальчик🤍</div>
+                </div>
+                <div class="nav-controls">
+                    <button class="nav-btn" onclick="prev()">Назад</button>
+                    <span class="page-num">8 / 8</span>
+                    <span style="width: 50px;"></span>
                 </div>
             </div>
 
@@ -271,12 +319,12 @@
             if(document.getElementById('pass').value === '201025') {
                 go('scr2', 'scr3');
             } else {
-                document.getElementById('err').innerText = "Попробуй еще раз, балам";
+                document.getElementById('err').innerText = "Неверная дата, балам";
             }
         }
 
         let cur = 0;
-        const total = 5;
+        const total = 9; // Всего страниц включая обложку
 
         function update() {
             document.querySelectorAll('.page').forEach((p, i) => {
