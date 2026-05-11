@@ -30,24 +30,25 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, #1a1412 0%, #000 100%);
-            z-index: -1;
+            z-index: -2;
         }
 
-        /* Декор на фоне */
-        .bg-text {
+        /* Контейнер для падающих слов */
+        #bg-flow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .flow-item {
             position: absolute;
-            color: rgba(212, 163, 145, 0.07);
+            color: rgba(212, 163, 145, 0.15);
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
-            pointer-events: none;
-            z-index: -1;
+            white-space: nowrap;
             user-select: none;
-            animation: pulse-soft 4s infinite ease-in-out;
-        }
-
-        @keyframes pulse-soft {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
+            will-change: transform;
         }
 
         .screen {
@@ -174,12 +175,7 @@
 <body>
 
     <div class="bg-particles"></div>
-    
-    <!-- Фоновые надписи -->
-    <div class="bg-text" style="top: 10%; left: 10%; font-size: 40px;">E🤍</div>
-    <div class="bg-text" style="bottom: 15%; right: 10%; font-size: 30px;">forever</div>
-    <div class="bg-text" style="top: 40%; right: 5%; font-size: 25px; opacity: 0.2;">E🤍</div>
-    <div class="bg-text" style="bottom: 40%; left: 5%; font-size: 20px; opacity: 0.2;">forever</div>
+    <div id="bg-flow"></div>
 
     <div id="scr1" class="screen">
         <div class="glass-card">
@@ -244,6 +240,45 @@
         let currentPage = 0;
         const totalPages = texts.length + 2;
 
+        // Генерация падающего фона
+        const words = ["E🤍", "forever"];
+        const flowContainer = document.getElementById('bg-flow');
+
+        function createFlowItem() {
+            const item = document.createElement('div');
+            item.className = 'flow-item';
+            item.innerText = words[Math.floor(Math.random() * words.length)];
+            
+            const startX = Math.random() * window.innerWidth;
+            const size = 15 + Math.random() * 25;
+            const duration = 8000 + Math.random() * 7000; // 8-15 секунд на пролет
+            
+            item.style.left = startX + 'px';
+            item.style.fontSize = size + 'px';
+            item.style.top = '-50px';
+            item.style.opacity = 0.05 + Math.random() * 0.15;
+            
+            flowContainer.appendChild(item);
+
+            const animation = item.animate([
+                { transform: 'translateY(0)' },
+                { transform: `translateY(${window.innerHeight + 100}px)` }
+            ], {
+                duration: duration,
+                easing: 'linear'
+            });
+
+            animation.onfinish = () => {
+                item.remove();
+                createFlowItem(); // Бесконечный цикл: один удалился, другой создался
+            };
+        }
+
+        // Запуск фона (создаем 15 элементов сразу)
+        for(let i=0; i<15; i++) {
+            setTimeout(createFlowItem, Math.random() * 10000);
+        }
+
         function go(f, t) {
             document.getElementById(f).classList.add('hidden');
             document.getElementById(t).classList.remove('hidden');
@@ -299,12 +334,10 @@
             const startDate = new Date('2025-10-20T22:47:00');
             const now = new Date();
             const diff = now - startDate;
-            
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
             const mins = Math.floor((diff / 1000 / 60) % 60);
             const secs = Math.floor((diff / 1000) % 60);
-            
             const timerStr = `${days}д ${hours}ч ${mins}м ${secs}с`;
             document.querySelectorAll('.global-timer').forEach(el => el.innerText = timerStr);
         }
