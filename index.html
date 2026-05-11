@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E + E</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;500&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    height:100vh;
+    background:#f5e6dc;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    font-family:'Cormorant Garamond', serif;
+}
+
+/* INTRO */
+
+.screen{
+    position:absolute;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    transition:1s;
+}
+
+.hidden{
+    opacity:0;
+    pointer-events:none;
+}
+
+.intro-box,
+.password-box{
+    background:rgba(255,255,255,0.75);
+    backdrop-filter:blur(10px);
+    padding:50px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 10px 35px rgba(0,0,0,0.15);
+    width:350px;
+}
+
+.intro-box h1,
+.password-box h1{
+    font-family:'Great Vibes', cursive;
+    font-size:55px;
+    color:#8b5e4f;
+    margin-bottom:20px;
+}
+
+.intro-box p,
+.password-box p{
+    font-size:22px;
+    color:#5a4037;
+    margin-bottom:30px;
+}
+
+button{
+    padding:12px 28px;
+    border:none;
+    border-radius:30px;
+    background:#c89b8a;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#b47d6b;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:15px;
+    margin-bottom:20px;
+    font-size:18px;
+    text-align:center;
+    outline:none;
+}
+
+/* BOOK */
+
+.book-container{
+    perspective:2000px;
+}
+
+.book{
+    position:relative;
+    width:350px;
+    height:500px;
+    transform-style:preserve-3d;
+}
+
+.cover{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:linear-gradient(145deg,#c89b8a,#b47d6b);
+    border-radius:10px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.3);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    transform-origin:left;
+    transition:1.5s;
+    z-index:10;
+}
+
+.cover h1{
+    font-family:'Great Vibes', cursive;
+    color:white;
+    font-size:70px;
+    font-weight:normal;
+    letter-spacing:4px;
+}
+
+.book.open .cover{
+    transform:rotateY(-160deg);
+}
+
+.pages{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:#fffaf5;
+    border-radius:10px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+    padding:40px;
+    overflow:hidden;
+}
+
+.page{
+    display:none;
+    height:100%;
+    animation:fade 0.5s ease;
+}
+
+.page.active{
+    display:block;
+}
+
+.page h2{
+    margin-bottom:20px;
+    color:#8b5e4f;
+    font-size:32px;
+}
+
+.page p{
+    font-size:22px;
+    line-height:1.7;
+    color:#5a4037;
+}
+
+.buttons{
+    position:absolute;
+    bottom:25px;
+    width:calc(100% - 80px);
+    display:flex;
+    justify-content:space-between;
+}
+
+.error{
+    color:#b53b3b;
+    margin-top:10px;
+    font-size:18px;
+}
+
+@keyframes fade{
+    from{
+        opacity:0;
+        transform:translateX(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- INTRO SCREEN -->
+
+<div class="screen" id="introScreen">
+
+    <div class="intro-box">
+        <h1>Welcome</h1>
+
+        <p>
+            Welcome to the Love Diary
+        </p>
+
+        <button onclick="goToPassword()">
+            Continue
+        </button>
+    </div>
+
+</div>
+
+<!-- PASSWORD SCREEN -->
+
+<div class="screen hidden" id="passwordScreen">
+
+    <div class="password-box">
+
+        <h1>Password</h1>
+
+        <p>
+            Enter the password
+        </p>
+
+        <input type="password" id="passwordInput" placeholder="Password">
+
+        <button onclick="checkPassword()">
+            Open
+        </button>
+
+        <div class="error" id="errorText"></div>
+
+    </div>
+
+</div>
+
+<!-- BOOK -->
+
+<div class="screen hidden" id="bookScreen">
+
+    <div class="book-container">
+
+        <div class="book" id="book">
+
+            <div class="cover" onclick="openBook()">
+                <h1>E + E</h1>
+            </div>
+
+            <div class="pages">
+
+                <!-- PAGE 1 -->
+                <div class="page active">
+
+                    <h2>Page 1</h2>
+
+                    <p>
+                        WRITE YOUR TEXT HERE
+                    </p>
+
+                </div>
+
+                <!-- PAGE 2 -->
+                <div class="page">
+
+                    <h2>Page 2</h2>
+
+                    <p>
+                        WRITE YOUR TEXT HERE
+                    </p>
+
+                </div>
+
+                <!-- PAGE 3 -->
+                <div class="page">
+
+                    <h2>Page 3</h2>
+
+                    <p>
+                        WRITE YOUR TEXT HERE
+                    </p>
+
+                </div>
+
+                <div class="buttons">
+
+                    <button onclick="prevPage()">
+                        Previous
+                    </button>
+
+                    <button onclick="nextPage()">
+                        Next
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const introScreen = document.getElementById("introScreen");
+const passwordScreen = document.getElementById("passwordScreen");
+const bookScreen = document.getElementById("bookScreen");
+
+const passwordInput = document.getElementById("passwordInput");
+const errorText = document.getElementById("errorText");
+
+const book = document.getElementById("book");
+const pages = document.querySelectorAll(".page");
+
+let currentPage = 0;
+
+function goToPassword(){
+
+    introScreen.classList.add("hidden");
+
+    setTimeout(() => {
+        passwordScreen.classList.remove("hidden");
+    }, 500);
+
+}
+
+function checkPassword(){
+
+    if(passwordInput.value === "201025"){
+
+        passwordScreen.classList.add("hidden");
+
+        setTimeout(() => {
+            bookScreen.classList.remove("hidden");
+        }, 500);
+
+    }else{
+
+        errorText.innerText = "Wrong password";
+
+    }
+
+}
+
+function openBook(){
+
+    book.classList.add("open");
+
+}
+
+function showPage(index){
+
+    pages.forEach(page => page.classList.remove("active"));
+
+    pages[index].classList.add("active");
+
+}
+
+function nextPage(){
+
+    if(currentPage < pages.length - 1){
+
+        currentPage++;
+
+        showPage(currentPage);
+
+    }
+
+}
+
+function prevPage(){
+
+    if(currentPage > 0){
+
+        currentPage--;
+
+        showPage(currentPage);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
