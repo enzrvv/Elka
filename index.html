@@ -1,397 +1,349 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Diary of Love</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Seven Months</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cover-bg: #1a1412;
+            --gold: #d4a391;
+            --page-bg: #fffcf9;
+            --text-dark: #3d302d;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            height: 100dvh;
+            background: #0f0a09;
+            font-family: 'Cormorant Garamond', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            perspective: 1000px;
+        }
 
-<style>
-:root{
-    --bg:#0d0a09;
-    --glass:rgba(255,255,255,.06);
-    --gold:#d6a48f;
-    --text:#3a2f2c;
-    --page:#fdf9f5;
-}
+        .bg-particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #1a1412 0%, #000 100%);
+            z-index: -2;
+        }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-}
+        #bg-flow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
 
-body{
-    height:100dvh;
-    overflow:hidden;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-family:'Cormorant Garamond',serif;
-    background:radial-gradient(circle at top,#241917,#0b0807 70%);
-}
+        .flow-item {
+            position: absolute;
+            color: rgba(212, 163, 145, 0.45); 
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            white-space: nowrap;
+            user-select: none;
+            will-change: transform;
+            font-weight: 600;
+        }
 
-/* background */
-.bg{
-    position:fixed;
-    inset:0;
-    z-index:-1;
-}
+        .screen {
+            position: absolute;
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            padding: 20px;
+            transition: opacity 0.6s ease;
+        }
 
-.glow{
-    position:absolute;
-    width:420px;
-    height:420px;
-    border-radius:50%;
-    filter:blur(120px);
-    opacity:.16;
-    animation:float 12s ease-in-out infinite;
-}
+        .hidden { opacity: 0; pointer-events: none; }
 
-.glow:nth-child(1){background:#d6a48f;top:-140px;left:-120px;}
-.glow:nth-child(2){background:#7a5246;bottom:-140px;right:-120px;animation-delay:4s;}
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 40px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 340px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
 
-@keyframes float{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(50px);}
-}
+        input {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 22px;
+            background: #fff;
+            color: #000;
+            outline: none;
+        }
 
-/* screens */
-.screen{
-    position:absolute;
-    inset:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    transition:.6s;
-}
+        .btn-entry {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            background: var(--gold);
+            color: white;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 600;
+            cursor: pointer;
+        }
 
-.hidden{
-    opacity:0;
-    pointer-events:none;
-}
+        .book-wrapper {
+            width: 100%;
+            max-width: 380px;
+            height: 85dvh;
+            position: relative;
+        }
 
-/* card */
-.card{
-    width:100%;
-    max-width:360px;
-    padding:38px 26px;
-    border-radius:28px;
-    background:var(--glass);
-    backdrop-filter:blur(18px);
-    border:1px solid rgba(255,255,255,.08);
-    text-align:center;
-    box-shadow:0 30px 80px rgba(0,0,0,.55);
-}
+        .page {
+            position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 20px;
+            padding: 40px 25px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            background: var(--page-bg);
+            color: var(--text-dark);
+        }
 
-.title{
-    font-family:'Great Vibes',cursive;
-    font-size:54px;
-    color:var(--gold);
-}
+        .page.active { display: flex; animation: pageIn 0.5s ease-out; }
 
-.subtitle{
-    margin:10px 0 24px;
-    font-size:12px;
-    letter-spacing:3px;
-    opacity:.7;
-    color:#d8c6bf;
-}
+        @keyframes pageIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
 
-input{
-    width:100%;
-    padding:18px;
-    border-radius:14px;
-    border:none;
-    text-align:center;
-    font-size:20px;
-    margin-bottom:16px;
-    outline:none;
-}
+        .page-cover {
+            background: var(--cover-bg);
+            background-image: url('https://www.transparenttextures.com/patterns/dark-leather.png');
+            color: var(--gold);
+            justify-content: center; align-items: center; text-align: center;
+            border: 1px solid rgba(212, 163, 145, 0.3);
+        }
+        
+        .gold-embossing {
+            border: 1px solid var(--gold);
+            padding: 40px 15px;
+            width: 90%; height: 90%;
+            display: flex; flex-direction: column; justify-content: center;
+            border-radius: 10px;
+        }
 
-button{
-    width:100%;
-    padding:16px;
-    border:none;
-    border-radius:14px;
-    cursor:pointer;
-    font-weight:600;
-    letter-spacing:3px;
-    color:white;
-    background:linear-gradient(135deg,#d6a48f,#b17f69);
-}
+        .text-box {
+            font-size: 19px;
+            line-height: 1.6;
+            font-style: italic;
+            flex-grow: 1;
+            display: flex; flex-direction: column; justify-content: center; text-align: center;
+        }
 
-/* book */
-.book{
-    width:100%;
-    max-width:400px;
-    height:86dvh;
-    position:relative;
-    perspective:1200px;
-}
+        .nav-controls {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 10px; min-height: 60px;
+        }
 
-.page{
-    position:absolute;
-    inset:0;
-    background:var(--page);
-    border-radius:26px;
-    padding:34px 24px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
+        .arrow-btn {
+            background: none; border: none;
+            color: var(--text-dark);
+            font-size: 35px;
+            cursor: pointer; padding: 10px; width: 50px;
+        }
 
-    opacity:0;
-    transform:translateX(40px) rotateY(8deg);
-    transition:0.55s cubic-bezier(.2,.8,.2,1);
-    pointer-events:none;
+        .timer-val { 
+            font-weight: 600; color: #8e6d5d; font-size: 14px; 
+            text-align: center; flex: 1;
+        }
 
-    box-shadow:0 40px 90px rgba(0,0,0,.55);
-}
-
-.page.active{
-    opacity:1;
-    transform:translateX(0) rotateY(0);
-    pointer-events:auto;
-}
-
-/* text */
-.text{
-    flex:1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    font-size:20px;
-    line-height:1.75;
-    font-style:italic;
-    color:var(--text);
-}
-
-/* nav */
-.nav{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-top:10px;
-}
-
-.arrow{
-    width:52px;
-    height:52px;
-    border-radius:50%;
-    border:none;
-    font-size:26px;
-    background:#f1e6e1;
-    color:#6c5147;
-}
-
-.counter{
-    font-size:13px;
-    color:#8a6a5c;
-}
-
-/* cover */
-.cover{
-    background:linear-gradient(180deg,#1b1311,#0f0c0b);
-    color:var(--gold);
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-}
-
-.cover h1{
-    font-family:'Great Vibes',cursive;
-    font-size:62px;
-}
-
-.cover p{
-    margin-top:12px;
-    opacity:.8;
-}
-
-/* progress */
-.progress{
-    position:absolute;
-    top:10px;
-    left:10px;
-    right:10px;
-    height:4px;
-    background:rgba(0,0,0,.08);
-    border-radius:10px;
-    overflow:hidden;
-}
-
-.bar{
-    height:100%;
-    width:0%;
-    background:linear-gradient(90deg,#d6a48f,#b17f69);
-    transition:.4s;
-}
-
-.final{
-    font-family:'Great Vibes',cursive;
-    font-size:44px;
-    color:#7a5d52;
-    text-align:center;
-}
-</style>
+        .signature {
+            font-family: 'Great Vibes', cursive;
+            font-size: 34px; margin-bottom: 20px;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="bg">
-    <div class="glow"></div>
-    <div class="glow"></div>
-</div>
+    <div class="bg-particles"></div>
+    <div id="bg-flow"></div>
 
-<div class="screen" id="s1">
-    <div class="card">
-        <div class="title">For you</div>
-        <div class="subtitle">OUR STORY</div>
-        <button onclick="openLogin()">Открыть</button>
+    <div id="scr1" class="screen">
+        <div class="glass-card">
+            <h1 style="font-family: 'Great Vibes'; font-size: 40px; color: var(--gold); margin-bottom: 20px;">For my baby</h1>
+            <button class="btn-entry" onclick="go('scr1', 'scr2')">Открыть</button>
+        </div>
     </div>
-</div>
 
-<div class="screen hidden" id="s2">
-    <div class="card">
-        <div class="title">Secret</div>
-        <div class="subtitle">Введите дату</div>
-        <input id="pass" type="password" placeholder="ДДММГГ">
-        <button onclick="login()">Войти</button>
-        <p id="err" style="color:#d6a48f;margin-top:12px;"></p>
+    <div id="scr2" class="screen hidden">
+        <div class="glass-card">
+            <h1 style="font-family: 'Great Vibes'; font-size: 35px; color: var(--gold); margin-bottom: 20px;">Secret</h1>
+            <input type="password" id="pass" placeholder="ДДММГГ" inputmode="numeric">
+            <button class="btn-entry" onclick="check()">Войти</button>
+            <p id="err" style="color: var(--gold); margin-top: 15px; font-size: 14px;"></p>
+        </div>
     </div>
-</div>
 
-<div class="screen hidden" id="s3">
+    <div id="scr3" class="screen hidden">
+        <div class="book-wrapper">
+            <div class="page page-cover active" id="p0">
+                <div class="gold-embossing" id="bookCover">
+                    <p style="letter-spacing: 5px; opacity: 0.7; font-size: 12px;">MEMORIES</p>
+                    <h1 style="font-size: 52px; font-family: 'Great Vibes';">Diary of Love</h1>
+                    <p style="margin-top: 25px; font-size: 16px; opacity: 0.8;">Seven Months</p>
+                    <button class="btn-entry" style="margin-top: 40px; max-width: 160px; align-self: center;" onclick="nextPage()">Читать</button>
+                </div>
+            </div>
 
-<div class="book">
+            <div id="dynamicPages"></div>
 
-<div class="progress">
-<div class="bar" id="bar"></div>
-</div>
+            <div class="page" id="pFinal">
+                <div class="text-box">
+                    <div class="signature">С любовью,<br>твой маленький мальчик!</div>
+                </div>
+                <div class="nav-controls" style="justify-content: center;">
+                    <button class="arrow-btn" onclick="prevPage()">&#8249;</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="page cover active">
-<div>
-<h1>Diary of Love</h1>
-<p>Seven Months</p>
-<button style="margin-top:30px;" onclick="start()">Читать</button>
-</div>
-</div>
+    <script>
+        const texts = [
+            "Нам 7 месяцев. И если честно, я до сих пор не могу в это поверить. Вроде бы просто цифра, всего лишь половина года, но внутри это ощущается намного больше. Будто мы прожили друг с другом уже целую маленькую жизнь. Потому что это уже давно не про время. Это про нас. Про всё, через что мы прошли вместе.",
+            "Про эмоции, про ссоры, про примирения, про моменты, когда казалось, что мы почти ломаемся, но всё равно остаёмся рядом. Мы не идеальные. И даже близко нет. У нас были тяжёлые ссоры, были моменты, когда слова слишком сильно ранили, когда тишина между нами длилась слишком долго.",
+            "Когда казалось, что мы уже на грани. Но потом происходило одно и то же. Мы начинали скучать друг по другу. И это чувство всегда оказывалось сильнее гордости, сильнее обид, сильнее злости и любых эмоций. Мы всё равно возвращались друг к другу.",
+            "И каждый раз это ощущалось будто заново, но уже намного глубже. Я помню наши обнимашки у кресента. И если честно, это вообще отдельная часть нашей истории, которую невозможно перепутать ни с чем другим. Это не было просто «мы встретились и обнялись».",
+            "В тот момент будто весь мир на секунду перестал существовать. Ты пришла с переживаниями, с волнением, с внутренним страхом, но всё равно была рядом. И когда мы обнялись, всё вокруг будто исчезло. Не было людей, шума, проблем. Были только ты и я.",
+            "И когда я поцеловал ручки моей малюськи, это было не просто так. Это был очень бережный, почти трепетный жест, потому что в тот момент ты ощущалась для меня самым ценным человеком. В этих поцелуях было всё. Нежность, забота, тепло и то чувство, когда человек настолько важен тебе, что даже обычное прикосновение становится особенным.",
+            "Или те обнимашки в подъезде математики. Когда всё получилось буквально в последний момент. Я успел приехать, и в ту секунду, когда ты оказалась в моих руках, было ощущение, будто всё наконец встало на свои места. Это длилось совсем недолго, но тепла в том моменте было столько, что я помню его до сих пор.",
+            "И ещё те обнимашки перед Ляман. Мы стояли и обнимались, а она так удивилась. Мы потом ещё обсуждали это) Но даже в том моменте было что-то очень настоящее. Немного неловкое, очень живое, очень наше.",
+            "И наши поцелуи. Щёчки, ручки, голова... Для меня каждый такой момент остаётся внутри как маленькое тепло. Когда я целую тебя, это никогда не ощущается просто жестом. Это как тихое «ты мне очень важна» без слов.",
+            "Когда я целовал твои ручки после обнимашек, это было ощущение, будто я пытаюсь через прикосновения передать всё, что чувствую, но не всегда умею сказать словами. И даже поцелуи в голову, такие спокойные и мягкие, всегда дают мне чувство уюта, будто в этот момент всё правильно.",
+            "И знаешь, всё это вообще не про идеальные отношения. Потому что идеальных отношений, как в фильмах, не существует. Но нам это и не нужно. У нас есть что-то настоящее. Живое. Иногда сложное, иногда слишком эмоциональное, но настоящее.",
+            "И самое главное, что в этой реальности мы всё равно выбираем друг друга. Даже когда меньше общаемся. Даже когда ссоримся. Даже когда между нами появляются усталость или обиды. Мы всё равно не отпускаем друг друга. И с каждым таким моментом становимся только ближе.",
+            "Ты для меня человек, с которым спокойно по-настоящему. Не просто хорошо или приятно, а именно спокойно. С тобой я могу быть собой, без попыток казаться лучше, чем я есть. Со всеми своими ошибками, эмоциями, ревностью, странностями, с тем, что иногда я сам в себе не понимаю.",
+            "И ты всё это видела. И всё равно осталась рядом. И это, бин, наверное самое ценное. Я правда горжусь тобой. Каждым твоим поступком, каждым твоим действием, тем, как ты умеешь любить, заботиться и быть рядом.",
+            "Меня искренне радует всё, что связано с тобой, даже самые маленькие вещи. И если честно, мне кажется, никто никогда не показывал мне столько любви, сколько показала ты. Ты невероятно верная, очень честная, настоящая.",
+            "И я иногда даже ловлю себя на мысли, что могу гордиться тем, что я именно твой парень, потому что рядом со мной такая замечательная девушка. Правда. Ты тот человек, рядом с которым хочется становиться лучше.",
+            "И я правда счастлив просто общаться с тобой, быть рядом с тобой, чувствовать тебя в своей жизни. Поэтому пожалуйста, не смотри на те моменты, когда я могу злиться, расстраиваться или переживать из-за чего-то. Помни главное, я всегда люблю тебя и никогда не хочу делать тебе больно.",
+            "Я хочу быть для тебя человеком, рядом с которым тебе спокойно. Твоей опорой, поддержкой, тем, к кому ты всегда можешь прийти. И иншАллах, душа моя, у нас всё будет хорошо.",
+            "Я правда очень ценю тебя. И иногда мне даже стыдно за свои поступки, за моменты, когда я делаю тебе больно или веду себя не так, как должен. Но ты всё равно не уходишь. Ты остаёшься рядом. И вместо того чтобы ломаться окончательно, мы пытаемся говорить, понимать друг друга, исправлять ошибки.",
+            "Если вспомнить конец декабря и январь, это был очень важный период для нас. Тогда мы реально могли потеряться. Было много непонимания, напряжения, ощущение, будто всё рушится. Но мы всё равно не отпустили друг друга. Мы остались. И прошли через это вместе.",
+            "И именно тогда я понял, что это уже не просто эмоции. Это что-то намного глубже. Что-то, что мы держим осознанно. Сейчас мы уже другие. Не идеальные, но более настоящие. Мы умеем разговаривать друг с другом.",
+            "Пусть не всегда сразу, пусть иногда тяжело, но мы стараемся понять друг друга. И это очень большой шаг вперёд. И даже то, что мы иногда меньше общаемся сейчас, вообще не уменьшает то, что между нами есть.",
+            "Потому что суть не в количестве сообщений. Суть в том, насколько мы значим друг для друга. Иногда я думаю о будущем. Уже не как о какой-то далёкой фантазии, а как о чём-то, что мы реально обсуждаем.",
+            "Дом, жизнь, свадьба, обычные дни вместе, когда не нужно ничего доказывать, потому что есть просто «мы». И это уже не кажется чем-то невозможным. Это ощущается как дорога, по которой мы идём вместе.",
+            "Я не идеален. Я это знаю. Я могу ошибаться, могу перегибать, могу не всегда правильно выражать свои чувства. Но ты всё равно рядом, и я никогда не воспринимаю это как что-то должное. Потому что я понимаю, что это твой выбор.",
+            "И я правда стараюсь быть достойным этого выбора. Нам 7 месяцев. Но ощущение такое, будто это только начало чего-то очень большого. И если это действительно только начало нашей истории, то я не хочу терять то, что у нас есть. Я верю в нас 🤍"
+        ];
 
-<div id="pages"></div>
+        let currentPage = 0;
+        const totalPages = texts.length + 2;
+        const words = ["E🤍", "forever"];
+        const flowContainer = document.getElementById('bg-flow');
 
-<div class="page">
-<div class="text">
-<div class="final">С любовью,<br>твой мальчик 🤍</div>
-</div>
-<div class="nav">
-<button class="arrow" onclick="prev()">‹</button>
-</div>
-</div>
+        function createFlowItem() {
+            const item = document.createElement('div');
+            item.className = 'flow-item';
+            item.innerText = words[Math.floor(Math.random() * words.length)];
+            const startX = Math.random() * (window.innerWidth - 80);
+            const size = 22 + Math.random() * 14;
+            item.style.left = startX + 'px';
+            item.style.fontSize = size + 'px';
+            item.style.top = '-50px';
+            flowContainer.appendChild(item);
+            const animation = item.animate([
+                { transform: 'translateY(0)' },
+                { transform: `translateY(${window.innerHeight + 100}px)` }
+            ], {
+                duration: 10000,
+                easing: 'linear'
+            });
+            animation.onfinish = () => { item.remove(); };
+        }
 
-</div>
+        setInterval(createFlowItem, 1200);
 
-</div>
+        function go(f, t) {
+            document.getElementById(f).classList.add('hidden');
+            document.getElementById(t).classList.remove('hidden');
+        }
 
-<script>
+        function check() {
+            if(document.getElementById('pass').value === '201025') {
+                if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+                buildPages();
+                go('scr2', 'scr3');
+                updateTimer();
+                setInterval(updateTimer, 1000);
+            } else {
+                document.getElementById('err').innerText = "Неверная дата, балам";
+            }
+        }
 
-const texts = [
-"Нам 7 месяцев, не могу в это поверить. Это уже давно не просто цифра, это мы, всё что между нами было.",
-"Мы не идеальные, но всегда возвращались друг к другу.",
-"Я помню наши обнимашки у кресента, будто мир остановился.",
-"И когда я целовал ручки моей малюськи, в этом было всё.",
-"Обнимашки в подъезде математики были слишком настоящими.",
-"И обнимашки перед Ляман тоже.",
-"Поцелуи в щёчки, ручки, голову — мой язык любви.",
-"С тобой мне спокойно по-настоящему.",
-"Я горжусь тобой и тем, какая ты есть.",
-"И горжусь тем, что я твой парень.",
-"Ты дала мне больше любви, чем я когда-либо знал.",
-"Даже если мы ссоримся — мы не отпускаем.",
-"Я верю в нас.",
-"Дом, жизнь, будущее — уже не мечта.",
-"Я не идеален, но стараюсь ради нас.",
-"Я люблю тебя 🤍"
-];
+        function buildPages() {
+            const container = document.getElementById('dynamicPages');
+            container.innerHTML = '';
+            texts.forEach((text, i) => {
+                const div = document.createElement('div');
+                div.className = 'page';
+                div.id = `p${i+1}`;
+                div.innerHTML = `
+                    <div class="text-box">${text}</div>
+                    <div class="nav-controls">
+                        <button class="arrow-btn" onclick="prevPage()">&#8249;</button>
+                        <span class="timer-val global-timer">...</span>
+                        <button class="arrow-btn" onclick="nextPage()">&#8250;</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
 
-let i = 0;
-let auto = null;
+        function nextPage() {
+            if(currentPage < totalPages - 1) { currentPage++; updatePage(); }
+        }
 
-function render(){
-const root = document.getElementById('pages');
-root.innerHTML = '';
+        function prevPage() {
+            if(currentPage > 0) { currentPage--; updatePage(); }
+        }
 
-texts.forEach((t,idx)=>{
-const p = document.createElement('div');
-p.className = 'page';
-p.innerHTML = `
-<div class="text">${t}</div>
-<div class="nav">
-<button class="arrow" onclick="prev()">‹</button>
-<div class="counter">${idx+1}/${texts.length}</div>
-<button class="arrow" onclick="next()">›</button>
-</div>
-`;
-root.appendChild(p);
-});
+        function updatePage() {
+            if (navigator.vibrate) navigator.vibrate(20);
+            document.querySelectorAll('.page').forEach((p, i) => {
+                p.classList.toggle('active', i === currentPage);
+            });
+        }
 
-update();
-}
+        function updateTimer() {
+            const startDate = new Date('2025-10-20T22:47:00');
+            const now = new Date();
+            const diff = now - startDate;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const mins = Math.floor((diff / 1000 / 60) % 60);
+            const secs = Math.floor((diff / 1000) % 60);
+            const timerStr = `${days}д ${hours}ч ${mins}м ${secs}с`;
+            document.querySelectorAll('.global-timer').forEach(el => el.innerText = timerStr);
+        }
 
-function update(){
-const pages = document.querySelectorAll('.page');
-pages.forEach((p,idx)=>{
-p.classList.toggle('active', idx === i);
-});
-
-const bar = document.getElementById('bar');
-bar.style.width = ((i)/(texts.length-1))*100 + '%';
-
-if(navigator.vibrate) navigator.vibrate(12);
-
-localStorage.setItem('page', i);
-}
-
-function next(){
-if(i < texts.length) i++;
-update();
-}
-
-function prev(){
-if(i > 0) i--;
-update();
-}
-
-function openLogin(){
-document.getElementById('s1').classList.add('hidden');
-document.getElementById('s2').classList.remove('hidden');
-}
-
-function login(){
-if(document.getElementById('pass').value === '201025'){
-document.getElementById('s2').classList.add('hidden');
-document.getElementById('s3').classList.remove('hidden');
-
-i = parseInt(localStorage.getItem('page') || 0);
-render();
-}else{
-document.getElementById('err').innerText = 'Неверная дата';
-}
-}
-
-function start(){
-i = 0;
-update();
-}
-
-document.addEventListener('keydown',(e)=>{
-if(e.key==='ArrowRight') next();
-if(e.key==='ArrowLeft') prev();
-});
-
-</script>
-
+        window.addEventListener('deviceorientation', (e) => {
+            const cover = document.getElementById('bookCover');
+            if(!cover) return;
+            const x = Math.min(Math.max(e.beta, -15), 15) / 2;
+            const y = Math.min(Math.max(e.gamma, -15), 15) / 2;
+            cover.style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
+        });
+    </script>
 </body>
 </html>
