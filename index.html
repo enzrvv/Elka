@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Our Story</title>
+<title>Diary of Love</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
+    --bg:#0d0a09;
+    --glass:rgba(255,255,255,.06);
     --gold:#d6a48f;
-    --text:#3b2f2c;
-    --card:#fdf9f5;
-    --cover:#1c1412;
+    --text:#3a2f2c;
+    --page:#fdf9f5;
 }
 
 *{
@@ -29,132 +29,152 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:radial-gradient(circle at top,#241917,#0b0807 70%);
     font-family:'Cormorant Garamond',serif;
-    perspective:1400px;
+    background:radial-gradient(circle at top,#241917,#0b0807 70%);
 }
 
+/* background */
 .bg{
     position:fixed;
     inset:0;
-    z-index:-2;
+    z-index:-1;
 }
 
-.blur{
+.glow{
     position:absolute;
-    width:360px;
-    height:360px;
-    filter:blur(100px);
-    opacity:.18;
+    width:420px;
+    height:420px;
     border-radius:50%;
-    animation:float 14s ease-in-out infinite;
+    filter:blur(120px);
+    opacity:.16;
+    animation:float 12s ease-in-out infinite;
 }
 
-.blur:nth-child(1){background:#d6a48f;top:-120px;left:-80px;}
-.blur:nth-child(2){background:#8d5f4f;right:-100px;bottom:-120px;animation-delay:4s;}
+.glow:nth-child(1){background:#d6a48f;top:-140px;left:-120px;}
+.glow:nth-child(2){background:#7a5246;bottom:-140px;right:-120px;animation-delay:4s;}
 
 @keyframes float{
     0%,100%{transform:translateY(0);}
-    50%{transform:translateY(40px);}
+    50%{transform:translateY(50px);}
 }
 
+/* screens */
 .screen{
     position:absolute;
     inset:0;
     display:flex;
     justify-content:center;
     align-items:center;
-    padding:20px;
-    transition:.5s;
+    transition:.6s;
 }
 
-.hidden{opacity:0;pointer-events:none;}
+.hidden{
+    opacity:0;
+    pointer-events:none;
+}
 
-.login{
+/* card */
+.card{
     width:100%;
-    max-width:340px;
-    padding:35px 25px;
-    border-radius:35px;
-    background:rgba(255,255,255,.05);
+    max-width:360px;
+    padding:38px 26px;
+    border-radius:28px;
+    background:var(--glass);
     backdrop-filter:blur(18px);
     border:1px solid rgba(255,255,255,.08);
     text-align:center;
+    box-shadow:0 30px 80px rgba(0,0,0,.55);
 }
 
 .title{
     font-family:'Great Vibes',cursive;
-    font-size:52px;
+    font-size:54px;
     color:var(--gold);
 }
 
 .subtitle{
-    margin-top:10px;
-    margin-bottom:25px;
+    margin:10px 0 24px;
     font-size:12px;
     letter-spacing:3px;
+    opacity:.7;
     color:#d8c6bf;
-    opacity:.8;
 }
 
 input{
     width:100%;
     padding:18px;
+    border-radius:14px;
     border:none;
-    border-radius:15px;
-    font-size:20px;
     text-align:center;
-    margin-bottom:18px;
+    font-size:20px;
+    margin-bottom:16px;
+    outline:none;
 }
 
 button{
     width:100%;
-    padding:17px;
+    padding:16px;
     border:none;
-    border-radius:15px;
+    border-radius:14px;
     cursor:pointer;
-    background:linear-gradient(135deg,#d6a48f,#b17f69);
-    color:white;
     font-weight:600;
     letter-spacing:3px;
+    color:white;
+    background:linear-gradient(135deg,#d6a48f,#b17f69);
 }
 
+/* book */
 .book{
     width:100%;
-    max-width:390px;
+    max-width:400px;
     height:86dvh;
     position:relative;
+    perspective:1200px;
 }
 
 .page{
     position:absolute;
     inset:0;
-    display:none;
+    background:var(--page);
+    border-radius:26px;
+    padding:34px 24px;
+    display:flex;
     flex-direction:column;
     justify-content:space-between;
-    padding:38px 26px;
-    border-radius:28px;
-    background:var(--card);
-    color:var(--text);
-    box-shadow:0 35px 70px rgba(0,0,0,.55);
+
+    opacity:0;
+    transform:translateX(40px) rotateY(8deg);
+    transition:0.55s cubic-bezier(.2,.8,.2,1);
+    pointer-events:none;
+
+    box-shadow:0 40px 90px rgba(0,0,0,.55);
 }
 
-.page.active{display:flex;}
+.page.active{
+    opacity:1;
+    transform:translateX(0) rotateY(0);
+    pointer-events:auto;
+}
 
-.page-text{
+/* text */
+.text{
     flex:1;
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center;
-    font-size:21px;
-    line-height:1.65;
+    font-size:20px;
+    line-height:1.75;
     font-style:italic;
+    color:var(--text);
 }
 
-.bottom{
+/* nav */
+.nav{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    margin-top:10px;
 }
 
 .arrow{
@@ -162,168 +182,214 @@ button{
     height:52px;
     border-radius:50%;
     border:none;
-    background:#f2e7e1;
-    font-size:28px;
-    color:#6d5348;
+    font-size:26px;
+    background:#f1e6e1;
+    color:#6c5147;
 }
 
 .counter{
-    font-size:14px;
-    color:#8b6b5d;
+    font-size:13px;
+    color:#8a6a5c;
 }
 
+/* cover */
 .cover{
-    background:var(--cover);
+    background:linear-gradient(180deg,#1b1311,#0f0c0b);
     color:var(--gold);
-    display:flex;
     justify-content:center;
     align-items:center;
     text-align:center;
 }
 
-.cover-inner{
-    border:1px solid rgba(214,164,143,.4);
-    border-radius:18px;
-    padding:30px;
-    width:88%;
-    height:88%;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-}
-
-.cover-title{
+.cover h1{
     font-family:'Great Vibes',cursive;
-    font-size:60px;
+    font-size:62px;
 }
 
-.cover-sub{
-    margin-top:20px;
+.cover p{
+    margin-top:12px;
     opacity:.8;
+}
+
+/* progress */
+.progress{
+    position:absolute;
+    top:10px;
+    left:10px;
+    right:10px;
+    height:4px;
+    background:rgba(0,0,0,.08);
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#d6a48f,#b17f69);
+    transition:.4s;
 }
 
 .final{
     font-family:'Great Vibes',cursive;
     font-size:44px;
+    color:#7a5d52;
     text-align:center;
 }
-
 </style>
 </head>
 
 <body>
 
 <div class="bg">
-    <div class="blur"></div>
-    <div class="blur"></div>
+    <div class="glow"></div>
+    <div class="glow"></div>
 </div>
 
 <div class="screen" id="s1">
-    <div class="login">
-        <div class="title">For my baby</div>
+    <div class="card">
+        <div class="title">For you</div>
         <div class="subtitle">OUR STORY</div>
-        <button onclick="go()">Открыть</button>
+        <button onclick="openLogin()">Открыть</button>
     </div>
 </div>
 
 <div class="screen hidden" id="s2">
-    <div class="login">
+    <div class="card">
         <div class="title">Secret</div>
-        <div class="subtitle">ДДММГГ</div>
-        <input id="pass" type="password">
-        <button onclick="check()">Войти</button>
-        <p id="err"></p>
+        <div class="subtitle">Введите дату</div>
+        <input id="pass" type="password" placeholder="ДДММГГ">
+        <button onclick="login()">Войти</button>
+        <p id="err" style="color:#d6a48f;margin-top:12px;"></p>
     </div>
 </div>
 
 <div class="screen hidden" id="s3">
-    <div class="book">
 
-        <div class="page cover active">
-            <div class="cover-inner">
-                <div class="cover-title">Diary of Love</div>
-                <div class="cover-sub">Seven Months</div>
-                <button onclick="next()">Читать</button>
-            </div>
-        </div>
+<div class="book">
 
-        <div id="pages"></div>
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
 
-        <div class="page">
-            <div class="page-text">
-                <div class="final">С любовью,<br>твой мальчик 🤍</div>
-            </div>
-            <div class="bottom">
-                <button onclick="prev()" class="arrow">‹</button>
-            </div>
-        </div>
+<div class="page cover active">
+<div>
+<h1>Diary of Love</h1>
+<p>Seven Months</p>
+<button style="margin-top:30px;" onclick="start()">Читать</button>
+</div>
+</div>
 
-    </div>
+<div id="pages"></div>
+
+<div class="page">
+<div class="text">
+<div class="final">С любовью,<br>твой мальчик 🤍</div>
+</div>
+<div class="nav">
+<button class="arrow" onclick="prev()">‹</button>
+</div>
+</div>
+
+</div>
+
 </div>
 
 <script>
 
 const texts = [
-"Нам 7 месяцев, не могу в это поверить. И вроде бы это просто цифра, но если честно, внутри ощущается так, будто мы прожили намного больше, чем половину года. Это уже не про время, это про нас. Про всё, что между нами было, про эмоции, про ссоры, про примирения, про моменты, когда мы почти ломались, но всё равно оставались друг у друга.",
-"Мы не идеальные. И даже близко нет. У нас были ссоры, иногда очень тяжёлые, когда слова могли ранить, когда тишина длилась слишком долго, когда казалось, что мы на грани. Но потом происходило одно и то же. Мы скучали. И вот это чувство всегда было сильнее гордости, сильнее обид, сильнее любых эмоций.",
-"Мы возвращались друг к другу. И каждый раз это было как будто заново, но уже глубже. Я помню наши обнимашки у кресента...",
-"Это было как будто весь мир на секунду перестал существовать...",
-"И когда я поцеловал ручки моей малюськи...",
-"Или те обнимашки в подъезде математики...",
-"И ещё те обнимашки перед Ляман...",
-"И наши поцелуи. Щёчки, ручки, голова...",
-"Когда я целую тебя, это не просто жест...",
-"Ты для меня человек, с которым спокойно по-настоящему...",
-"Я правда горжусь тобой...",
-"И я иногда даже ловлю себя на мысли, что могу гордиться тем, что я именно твой парень...",
-"Мне кажется, никто никогда не показывал мне столько любви...",
-"Даже когда мы ссоримся...",
-"Дом, жизнь, свадьба...",
-"Я не идеален...",
-"Я верю в нас 🤍"
+"Нам 7 месяцев, не могу в это поверить. Это уже давно не просто цифра, это мы, всё что между нами было.",
+"Мы не идеальные, но всегда возвращались друг к другу.",
+"Я помню наши обнимашки у кресента, будто мир остановился.",
+"И когда я целовал ручки моей малюськи, в этом было всё.",
+"Обнимашки в подъезде математики были слишком настоящими.",
+"И обнимашки перед Ляман тоже.",
+"Поцелуи в щёчки, ручки, голову — мой язык любви.",
+"С тобой мне спокойно по-настоящему.",
+"Я горжусь тобой и тем, какая ты есть.",
+"И горжусь тем, что я твой парень.",
+"Ты дала мне больше любви, чем я когда-либо знал.",
+"Даже если мы ссоримся — мы не отпускаем.",
+"Я верю в нас.",
+"Дом, жизнь, будущее — уже не мечта.",
+"Я не идеален, но стараюсь ради нас.",
+"Я люблю тебя 🤍"
 ];
 
-let current=0;
+let i = 0;
+let auto = null;
 
 function render(){
-    const container=document.getElementById('pages');
-    container.innerHTML='';
-    texts.forEach((t,i)=>{
-        const d=document.createElement('div');
-        d.className='page';
-        d.innerHTML=`
-            <div class="page-text">${t}</div>
-            <div class="bottom">
-                <button class="arrow" onclick="prev()">‹</button>
-                <div class="counter">${i+1}/${texts.length}</div>
-                <button class="arrow" onclick="next()">›</button>
-            </div>`;
-        container.appendChild(d);
-    });
-    update();
+const root = document.getElementById('pages');
+root.innerHTML = '';
+
+texts.forEach((t,idx)=>{
+const p = document.createElement('div');
+p.className = 'page';
+p.innerHTML = `
+<div class="text">${t}</div>
+<div class="nav">
+<button class="arrow" onclick="prev()">‹</button>
+<div class="counter">${idx+1}/${texts.length}</div>
+<button class="arrow" onclick="next()">›</button>
+</div>
+`;
+root.appendChild(p);
+});
+
+update();
 }
 
 function update(){
-    document.querySelectorAll('.page').forEach((p,i)=>{
-        p.classList.toggle('active',i===current);
-    });
+const pages = document.querySelectorAll('.page');
+pages.forEach((p,idx)=>{
+p.classList.toggle('active', idx === i);
+});
+
+const bar = document.getElementById('bar');
+bar.style.width = ((i)/(texts.length-1))*100 + '%';
+
+if(navigator.vibrate) navigator.vibrate(12);
+
+localStorage.setItem('page', i);
 }
 
-function next(){if(current<texts.length)current++,update();}
-function prev(){if(current>0)current--,update();}
-
-function go(){document.getElementById('s1').classList.add('hidden');document.getElementById('s2').classList.remove('hidden');}
-
-function check(){
-    if(document.getElementById('pass').value==='201025'){
-        document.getElementById('s2').classList.add('hidden');
-        document.getElementById('s3').classList.remove('hidden');
-        render();
-    }else{
-        document.getElementById('err').innerText='Неверная дата';
-    }
+function next(){
+if(i < texts.length) i++;
+update();
 }
+
+function prev(){
+if(i > 0) i--;
+update();
+}
+
+function openLogin(){
+document.getElementById('s1').classList.add('hidden');
+document.getElementById('s2').classList.remove('hidden');
+}
+
+function login(){
+if(document.getElementById('pass').value === '201025'){
+document.getElementById('s2').classList.add('hidden');
+document.getElementById('s3').classList.remove('hidden');
+
+i = parseInt(localStorage.getItem('page') || 0);
+render();
+}else{
+document.getElementById('err').innerText = 'Неверная дата';
+}
+}
+
+function start(){
+i = 0;
+update();
+}
+
+document.addEventListener('keydown',(e)=>{
+if(e.key==='ArrowRight') next();
+if(e.key==='ArrowLeft') prev();
+});
 
 </script>
 
