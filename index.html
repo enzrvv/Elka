@@ -23,7 +23,7 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            perspective: 1000px;
+            perspective: 2000px;
         }
 
         .bg-particles {
@@ -104,6 +104,7 @@
             max-width: 380px;
             height: 85dvh;
             position: relative;
+            transform-style: preserve-3d;
         }
 
         .page {
@@ -116,13 +117,24 @@
             box-shadow: 0 30px 60px rgba(0,0,0,0.6);
             background: var(--page-bg);
             color: var(--text-dark);
+            backface-visibility: hidden;
+            transform-origin: left center;
+            transition: transform 0.7s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.5s ease;
         }
 
-        .page.active { display: flex; animation: pageIn 0.5s ease-out; }
+        .page.active { 
+            display: flex; 
+            transform: rotateY(0deg) scale(1);
+            opacity: 1;
+            z-index: 2;
+        }
 
-        @keyframes pageIn {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
+        .page.flipped {
+            display: flex;
+            transform: rotateY(-140deg) scale(0.95);
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
         }
 
         .page-cover {
@@ -139,6 +151,7 @@
             width: 90%; height: 90%;
             display: flex; flex-direction: column; justify-content: center;
             border-radius: 10px;
+            transition: transform 0.2s ease-out;
         }
 
         .text-box {
@@ -180,17 +193,115 @@
             margin-left: 2px;
             vertical-align: baseline;
         }
+
+        .menu-trigger {
+            position: fixed;
+            top: max(20px, env(safe-area-inset-top));
+            right: 25px;
+            color: var(--gold);
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            z-index: 10;
+            font-weight: 600;
+            padding: 5px;
+            border-bottom: 1px solid transparent;
+            transition: border 0.3s ease;
+        }
+        
+        .menu-trigger:hover {
+            border-bottom: 1px solid var(--gold);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 10, 9, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .menu-overlay.open {
+            opacity: 1; pointer-events: auto;
+        }
+
+        .menu-close {
+            position: absolute;
+            top: max(20px, env(safe-area-inset-top));
+            right: 25px;
+            color: var(--gold);
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .menu-list {
+            list-style: none;
+            text-align: center;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .menu-item {
+            color: #fff;
+            font-size: 18px;
+            font-style: italic;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .menu-overlay.open .menu-item {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .menu-overlay.open .menu-item:nth-child(1) { transition-delay: 0.1s; }
+        .menu-overlay.open .menu-item:nth-child(2) { transition-delay: 0.15s; }
+        .menu-overlay.open .menu-item:nth-child(3) { transition-delay: 0.2s; }
+        .menu-overlay.open .menu-item:nth-child(4) { transition-delay: 0.25s; }
+        .menu-overlay.open .menu-item:nth-child(5) { transition-delay: 0.3s; }
+        .menu-overlay.open .menu-item:nth-child(6) { transition-delay: 0.35s; }
+        .menu-overlay.open .menu-item:nth-child(7) { transition-delay: 0.4s; }
+
+        .menu-item:hover, .menu-item.active-chapter {
+            color: var(--gold);
+        }
     </style>
 </head>
 <body>
 
+    <audio id="bg-music" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
     <div class="bg-particles"></div>
     <div id="bg-flow"></div>
+
+    <div id="menuBtn" class="menu-trigger hidden" onclick="toggleMenu()">Chapters</div>
+
+    <div id="menuBox" class="menu-overlay">
+        <div class="menu-close" onclick="toggleMenu()">&times;</div>
+        <ul class="menu-list">
+            <li class="menu-item" onclick="jumpToChapter(0)">Обложка</li>
+            <li class="menu-item" onclick="jumpToChapter(1)">1. Больше, чем цифры</li>
+            <li class="menu-item" onclick="jumpToChapter(6)">2. Вспышки в памяти</li>
+            <li class="menu-item" onclick="jumpToChapter(15)">3. До каждого столба...</li>
+            <li class="menu-item" onclick="jumpToChapter(20)">4. Секунда на документы</li>
+            <li class="menu-item" onclick="jumpToChapter(22)">5. Не из фильмов</li>
+            <li class="menu-item" onclick="jumpToChapter(32)">6. Точка невозврата</li>
+            <li class="menu-item" onclick="jumpToChapter(35)">7. Дорога, которую видно</li>
+        </ul>
+    </div>
 
     <div id="scr1" class="screen">
         <div class="glass-card">
             <h1 style="font-family: 'Great Vibes'; font-size: 40px; color: var(--gold); margin-bottom: 20px;">For my baby</h1>
-            <button class="btn-entry" onclick="go('scr1', 'scr2')">Открыть</button>
+            <button class="btn-entry" onclick="startAll()">Открыть</button>
         </div>
     </div>
 
@@ -228,6 +339,13 @@
     </div>
 
     <script>
+        const audio = document.getElementById('bg-music');
+        
+        function startAll() {
+            audio.play().catch(() => {});
+            go('scr1', 'scr2');
+        }
+
         const texts = [
             "Нам 7 месяцев. И если честно, я до сих пор не могу в это поверить. Вроде бы просто цифра, всего лишь половина года, но внутри это ощущается намного больше. Будто мы прожили друг с другом уже целую маленькую жизнь.",
             "Потому что это уже давно не про время. Это про нас. Про всё, через что мы прошли вместе. Про эмоции, про ссоры, про примирения, про моменты, когда казалось, что мы почти ломаемся, но всё равно остаёмся рядом.",
@@ -255,7 +373,7 @@
             "И я правда счастлив просто общаться с тобой, быть рядом с тобой, чувствовать тебя в своей жизни. Поэтому пожалуйста, не смотри на те моменты, когда я могу злиться, расстраиваться или переживать из-за чего-то. Помни главное, я всегда люблю тебя и никогда не хочу делать тебе больно.",
             "Нет ничего в этом мире, что ты могла бы сделать, делаешь сейчас или сделаешь когда-нибудь, из-за чего я стал бы любить тебя меньше. Наоборот. С каждым днём, с каждой секундой рядом с тобой я люблю тебя только сильнее.",
             "И знаешь, как говорила тётя Сабина, терпение реально очень важная штука. Особенно в отношениях. Да, ты иногда говоришь, что часто обижаешься, но солнышко моё, ты же знаешь, что я только умиляюсь с того, как ты это делаешь. Правда.",
-            "Может быть с другими людьми я слишком прямолинейный и вообще не собираюсь heç kimin nazı ilə oynamaq, но с тобой всё совсем иначе. Да, между нами всего два года разницы, но как бы там ни было, в моих глазах ты всё равно моя малюська. Особенно в те моменты, когда дуешься или обижаешься.",
+            "Может быть с другими людьми я слишком прямолинейный и вообще не собираюсь heç kimin nazı逸 oynamaq, но с тобой всё совсем иначе. Да, между нами всего два года разницы, но как бы там ни было, в моих глазах ты всё равно моя малюська. Особенно в те моменты, когда дуешься или обижаешься.",
             "И иногда я даже представляю, как наша дочка в будущем тоже будет постоянно обижаться на нас так же мило, как ты сейчас)",
             "Я хочу быть для тебя человеком, рядом с которым тебе спокойно. Твоей опорой, поддержкой, тем, к кому ты всегда можешь прийти. И иншАллах, душа моя, у нас всё будет хорошо.",
             "Я правда очень ценю тебя. И иногда мне даже стыдно за свои поступки, за моменты, когда я делаю тебе больно или веду себя не так, как должен. Но ты всё равно не уходишь. Ты остаёшься рядом. И вместо того чтобы ломаться окончательно, мы пытаемся говорить, понимать друг друга, исправлять ошибки.",
@@ -305,6 +423,7 @@
                 if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
                 buildPages();
                 go('scr2', 'scr3');
+                document.getElementById('menuBtn').classList.remove('hidden');
                 updateTimer();
                 setInterval(updateTimer, 1000);
             } else {
@@ -332,18 +451,62 @@
         }
 
         function nextPage() {
-            if(currentPage < totalPages - 1) { currentPage++; updatePage(); }
+            if(currentPage < totalPages - 1) { 
+                const currentEl = document.getElementById(`p${currentPage === totalPages - 1 ? 'Final' : currentPage}`);
+                if(currentEl) currentEl.classList.add('flipped');
+                currentPage++; 
+                updatePage(); 
+            }
         }
 
         function prevPage() {
-            if(currentPage > 0) { currentPage--; updatePage(); }
+            if(currentPage > 0) { 
+                currentPage--; 
+                const nextEl = document.getElementById(`p${currentPage === totalPages - 1 ? 'Final' : currentPage}`);
+                if(nextEl) nextEl.classList.remove('flipped');
+                updatePage(); 
+            }
         }
 
         function updatePage() {
             if (navigator.vibrate) navigator.vibrate(20);
             document.querySelectorAll('.page').forEach((p, i) => {
-                p.classList.toggle('active', i === currentPage);
+                if(i === currentPage) {
+                    p.classList.add('active');
+                    p.classList.remove('flipped');
+                } else if(i < currentPage) {
+                    p.classList.remove('active');
+                    p.classList.add('flipped');
+                } else {
+                    p.classList.remove('active', 'flipped');
+                }
             });
+            updateActiveChapterHighlight();
+        }
+
+        function toggleMenu() {
+            document.getElementById('menuBox').classList.toggle('open');
+        }
+
+        function jumpToChapter(index) {
+            currentPage = index;
+            toggleMenu();
+            updatePage();
+        }
+
+        function updateActiveChapterHighlight() {
+            const items = document.querySelectorAll('.menu-item');
+            items.forEach(item => item.classList.remove('active-chapter'));
+            let currentChapterItem = 0;
+            if (currentPage >= 1 && currentPage <= 5) currentChapterItem = 1;
+            else if (currentPage >= 6 && currentPage <= 14) currentChapterItem = 2;
+            else if (currentPage >= 15 && currentPage <= 19) currentChapterItem = 3;
+            else if (currentPage >= 20 && currentPage <= 21) currentChapterItem = 4;
+            else if (currentPage >= 22 && currentPage <= 31) currentChapterItem = 5;
+            else if (currentPage >= 32 && currentPage <= 34) currentChapterItem = 6;
+            else if (currentPage >= 35) currentChapterItem = 7;
+            if(currentPage === 0) currentChapterItem = 0;
+            if(items[currentChapterItem]) items[currentChapterItem].classList.add('active-chapter');
         }
 
         function updateTimer() {
