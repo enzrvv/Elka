@@ -113,31 +113,28 @@
             width: 100%; height: 100%;
             border-radius: 20px;
             padding: 30px 25px 25px 25px;
-            display: flex;
+            display: none;
             flex-direction: column;
             box-shadow: 0 30px 60px rgba(0,0,0,0.5);
             background: var(--page-bg);
             color: var(--text-dark);
             backface-visibility: hidden;
             transform-origin: left center;
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease, z-index 0s;
-            transform: rotateY(0deg);
-            opacity: 0;
-            pointer-events: none;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
             z-index: 1;
         }
 
         .page.active { 
-            opacity: 1;
+            display: flex; 
             transform: rotateY(0deg);
-            pointer-events: auto;
+            opacity: 1;
             z-index: 3;
         }
 
         .page.flipped {
-            transform: rotateY(-180deg);
+            display: flex;
+            transform: rotateY(-140deg);
             opacity: 0;
-            pointer-events: none;
             z-index: 2;
         }
 
@@ -186,6 +183,7 @@
             display: flex; flex-direction: column; justify-content: center;
             border-radius: 12px;
             position: relative;
+            transition: transform 0.1s ease-out;
         }
 
         .cover-heart {
@@ -429,7 +427,7 @@
             "Я правда горжусь тобой. Каждым твоим поступком, каждым твоим действием, тем, как ты умеешь любить, заботиться и быть рядом. Меня искренне радует всё, что связано с тобой, даже самые маленькие вещи.",
             "И если честно, мне кажется, никто никогда не показывал мне столько любви, сколько показала ты. Ты невероятно верная, очень честная, настоящая.",
             "И я иногда даже ловлю себя на мысли, что могу гордиться тем, что я именно твой парень, потому что рядом со мной такая замечательная девушка. Правда. Ты тот человек, рядом с которым хочется становиться лучше.",
-            "И если задуматься, обычная пара “на интрижку” вряд ли смогла бы пройти через всё то, через что прошли мы. Вряд ли смогла бы постоянно расти, меняться, учиться понимать друг друга и всё равно оставаться вместе. А мы смогли. И до сих пор продолжаем становиться лучше рядом друг с большим.",
+            "И если задуматься, обычная пара “на интрижку” вряд ли смогла бы пройти через всё то, через что прошли мы. Вряд ли смогла бы постоянно расти, меняться, учиться понимать друг друга и всё равно оставаться вместе. А мы смогли. И до сих пор продолжаем становиться лучше рядом друг с другом.",
             "И я правда счастлив просто общаться с тобой, быть рядом с тобой, чувствовать тебя в своей жизни. Поэтому пожалуйста, не смотри на те моменты, когда я могу злиться, расстраиваться или переживать из-за чего-то. Помни главное, я всегда люблю тебя и никогда не хочу делать тебе больно.",
             "Нет ничего в этом мире, что ты могла бы сделать, делаешь сейчас или сделаешь когда-нибудь, из-за чего я стал бы любить тебя меньше. Наоборот. С каждым днём, с каждой секундой рядом с тобой я люблю тебя только сильнее.",
             "И знаешь, как говорила тётя Сабина, терпение реально очень важная штука. Особено в отношениях. Да, ты иногда говоришь, что часто обижаешься, но солнышко моё, ты же знаешь, что я только умиляюсь с того, как ты это делаешь. Правда.",
@@ -524,41 +522,50 @@
             });
             
             totalPages = texts.length + 2; 
-            updatePage(false);
+            document.getElementById('pFinal').style.display = 'none';
         }
 
         function nextPage() {
             if(currentPage < totalPages - 1) { 
                 currentPage++; 
-                updatePage(true); 
+                updatePage(); 
             }
         }
 
         function prevPage() {
             if(currentPage > 0) { 
                 currentPage--; 
-                updatePage(true); 
+                updatePage(); 
             }
         }
 
-        function updatePage(smooth = true) {
+        function updatePage() {
             if (navigator.vibrate) navigator.vibrate(20);
             
-            const allPages = document.querySelectorAll('.page');
+            const allPages = [];
+            allPages.push(document.getElementById('p0'));
+            for(let i = 1; i <= texts.length; i++) {
+                allPages.push(document.getElementById(`p${i}`));
+            }
+            allPages.push(document.getElementById('pFinal'));
+
             allPages.forEach((p, i) => {
-                p.style.transition = smooth 
-                    ? "transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease" 
-                    : "none";
+                if(!p) return;
+                p.style.transition = "transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease";
                 
                 if (i === currentPage) {
+                    p.style.display = 'flex';
+                    void p.offsetHeight; 
                     p.classList.add('active');
                     p.classList.remove('flipped');
                 } else if (i < currentPage) {
                     p.classList.remove('active');
                     p.classList.add('flipped');
+                    setTimeout(() => { if(i < currentPage) p.style.display = 'none'; }, 800);
                 } else {
                     p.classList.remove('active');
                     p.classList.remove('flipped');
+                    p.style.display = 'none';
                 }
             });
             updateActiveChapterHighlight();
@@ -571,7 +578,33 @@
         function jumpToChapter(index) {
             currentPage = index;
             toggleMenu();
-            updatePage(false);
+            
+            const allPages = [];
+            allPages.push(document.getElementById('p0'));
+            for(let i = 1; i <= texts.length; i++) {
+                allPages.push(document.getElementById(`p${i}`));
+            }
+            allPages.push(document.getElementById('pFinal'));
+
+            allPages.forEach((p, i) => {
+                if(!p) return;
+                p.style.transition = "none"; 
+                
+                if (i === currentPage) {
+                    p.style.display = 'flex';
+                    p.classList.add('active');
+                    p.classList.remove('flipped');
+                } else if (i < currentPage) {
+                    p.classList.remove('active');
+                    p.classList.add('flipped');
+                    p.style.display = 'none';
+                } else {
+                    p.classList.remove('active');
+                    p.classList.remove('flipped');
+                    p.style.display = 'none';
+                }
+            });
+            updateActiveChapterHighlight();
         }
 
         function updateActiveChapterHighlight() {
@@ -584,7 +617,7 @@
             else if (currentPage >= 20 && currentPage <= 21) currentChapterItem = 4;
             else if (currentPage >= 22 && currentPage <= 31) currentChapterItem = 5;
             else if (currentPage >= 32 && currentPage <= 34) currentChapterItem = 6;
-            else if (currentPage >= 35) currentChapterItem = 7;
+            else if (currentPage >= 35 && currentPage <= 37) currentChapterItem = 7;
             if(currentPage === 0) currentChapterItem = 0;
             if(items[currentChapterItem]) items[currentChapterItem].classList.add('active-chapter');
         }
