@@ -7,8 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --cover-bg: #1a1412;
-            --gold: #d4a391;
+            --cover-bg: #32161a; /* Благородный винно-бордовый оттенок для новой обложки */
+            --gold: #e5b89d;     /* Чуть более благородное, мягкое золото */
             --page-bg: #fffcf9;
             --text-dark: #3d302d;
         }
@@ -17,7 +17,7 @@
         
         body {
             height: 100dvh;
-            background: #1c1412; /* Сделали фон более явно выраженным темно-коричневым */
+            background: #1c1412;
             font-family: 'Cormorant Garamond', serif;
             display: flex;
             justify-content: center;
@@ -91,12 +91,13 @@
             border: none;
             border-radius: 15px;
             background: var(--gold);
-            color: white;
+            color: #32161a; /* Цвет текста кнопки в тон обложки */
             font-size: 14px;
             letter-spacing: 3px;
             text-transform: uppercase;
             font-weight: 600;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         .book-wrapper {
@@ -164,21 +165,33 @@
             opacity: 0.6;
         }
 
+        /* Обновленный стиль обложки с эффектом дорогой матовой бумаги/бархата */
         .page-cover {
             background: var(--cover-bg);
-            background-image: url('https://www.transparenttextures.com/patterns/dark-leather.png');
+            background-image: url('https://www.transparenttextures.com/patterns/soft-wallpaper.png'); /* Мягкая бархатистая текстура */
             color: var(--gold);
             justify-content: center; align-items: center; text-align: center;
-            border: 1px solid rgba(212, 163, 145, 0.3);
+            border: 1px solid rgba(229, 184, 157, 0.2);
             transform-origin: left center;
         }
         
+        /* Изящная двойная рамка для золотого тиснения */
         .gold-embossing {
             border: 1px solid var(--gold);
+            outline: 3px double var(--gold);
+            outline-offset: -8px;
             padding: 40px 15px;
             width: 90%; height: 90%;
             display: flex; flex-direction: column; justify-content: center;
-            border-radius: 10px;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .cover-heart {
+            font-size: 18px;
+            color: var(--gold);
+            margin: 20px 0;
+            opacity: 0.9;
         }
 
         .text-box {
@@ -246,7 +259,7 @@
         .menu-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(28, 20, 18, 0.97); /* Затемнение меню тоже адаптировано под новый фон */
+            background: rgba(28, 20, 18, 0.97); 
             backdrop-filter: blur(10px);
             z-index: 100;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -347,9 +360,10 @@
         <div class="book-wrapper">
             <div class="page page-cover active" id="p0">
                 <div class="gold-embossing" id="bookCover">
-                    <p style="letter-spacing: 5px; opacity: 0.7; font-size: 12px;">MEMORIES</p>
-                    <h1 style="font-size: 52px; font-family: 'Great Vibes';">Diary of Love</h1>
-                    <p style="margin-top: 25px; font-size: 16px; opacity: 0.8;">Seven Months</p>
+                    <p style="letter-spacing: 5px; opacity: 0.6; font-size: 11px;">MEMORIES</p>
+                    <h1 style="font-size: 52px; font-family: 'Great Vibes'; font-weight: 400; margin-top: 10px;">Diary of Love</h1>
+                    <div class="cover-heart">✦ 🤍 ✦</div>
+                    <p style="font-size: 16px; opacity: 0.8; font-style: italic; letter-spacing: 1px;">Seven Months</p>
                     <button class="btn-entry" style="margin-top: 40px; max-width: 160px; align-self: center;" onclick="nextPage()">Читать</button>
                 </div>
             </div>
@@ -395,7 +409,7 @@
             "Нам 7 месяцев. И если честно, я до сих пор не могу в это поверить. Вроде бы просто цифра, всего лишь половина года, но внутри это ощущается намного больше. Будто мы прожили друг с другом уже целую маленькую жизнь.",
             "Потому что это уже давно не про время. Это про нас. Про всё, через что мы прошли вместе. Про эмоции, про ссоры, про примирения, про моменты, когда казалось, что мы почти ломаемся, но всё равно остаёмся рядом.",
             "Мы не идеальные. И даже близко нет. У нас были тяжёлые ссоры, были моменты, когда слова слишком сильно ранили, когда тишина между нами длилась слишком долго. Когда казалось, что мы уже на грани.",
-            "Но потом происходило одно и то же. Мы начинали скучать друг по другу. И это чувство всегда оказывалось сильнее гордости, сильнее обид, сильнее злости и любых эмоций. Мы всё равно возвращались друг к другу. И каждый раз это ощущалось будто заново, но уже намного глубже.",
+            "Но потом происходило одно и то же. Мы начинали скучать друг по другу. И это чувство всегда оказывалось сильнее гордости, сильнее обид, сильнее злости и любых эмоций. Мы всё равно возвращались друг к другу. И каждый раз это ощущается будто заново, но уже намного глубже.",
             "И знаешь, как классно иногда оборачиваться назад и смотреть на нас сейчас. На то, какими мы были раньше, и какими стали рядом друг с другом. Потому что если честно, я всё больше убеждаюсь в том, что мы созданы друг для друга. Пусть не идеальные, пусть иногда слишком эмоциональные, но настоящие. Живые. Такие, какими и должны быть реальные чувства.",
             "Я помню наши обнимашки у кресента. И если честно, это вообще отдельная часть нашей истории, которую невозможно перепутать ни с чем другим. Это не было просто «мы встретились и обнялись».",
             "В тот момент будто весь мир на секунду перестал существовать. Ты пришла с переживаниями, с волнением, с внутренним страхом, но всё равно была рядом. И когда мы обнялись, всё вокруг будто исчезло. Не было людей, шума, проблем. Были только ты и я.",
