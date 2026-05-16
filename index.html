@@ -17,7 +17,7 @@
         
         body {
             height: 100dvh;
-            background: #0f0a09;
+            background: #1c1412; /* Сделали фон более явно выраженным темно-коричневым */
             font-family: 'Cormorant Garamond', serif;
             display: flex;
             justify-content: center;
@@ -29,7 +29,7 @@
         .bg-particles {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #1a1412 0%, #000 100%);
+            background: radial-gradient(circle at center, rgba(28, 20, 18, 0.2) 0%, #110c0b 100%);
             z-index: -2;
         }
 
@@ -62,14 +62,14 @@
         .hidden { opacity: 0; pointer-events: none; }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(15px);
             border-radius: 40px;
             padding: 40px 30px;
             width: 100%;
             max-width: 340px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.08);
         }
 
         input {
@@ -111,30 +111,57 @@
             position: absolute;
             width: 100%; height: 100%;
             border-radius: 20px;
-            padding: 40px 25px;
+            padding: 30px 25px 25px 25px;
             display: none;
             flex-direction: column;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
             background: var(--page-bg);
             color: var(--text-dark);
             backface-visibility: hidden;
             transform-origin: left center;
-            transition: transform 0.7s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.5s ease;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease, z-index 0s;
+            z-index: 1;
         }
 
         .page.active { 
             display: flex; 
-            transform: rotateY(0deg) scale(1);
+            transform: rotateY(0deg);
             opacity: 1;
-            z-index: 2;
+            z-index: 3;
         }
 
         .page.flipped {
             display: flex;
-            transform: rotateY(-140deg) scale(0.95);
+            transform: rotateY(-140deg);
             opacity: 0;
-            z-index: 1;
-            pointer-events: none;
+            z-index: 2;
+        }
+
+        .page-header-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            min-height: 24px;
+            margin-bottom: 10px;
+        }
+
+        .page-header {
+            text-align: center;
+            font-size: 14px;
+            letter-spacing: 1px;
+            color: #8e6d5d;
+            font-style: italic;
+            padding: 0 35px;
+        }
+
+        .page-divider {
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+            margin: 0 auto 20px auto;
+            opacity: 0.6;
         }
 
         .page-cover {
@@ -143,6 +170,7 @@
             color: var(--gold);
             justify-content: center; align-items: center; text-align: center;
             border: 1px solid rgba(212, 163, 145, 0.3);
+            transform-origin: left center;
         }
         
         .gold-embossing {
@@ -151,12 +179,11 @@
             width: 90%; height: 90%;
             display: flex; flex-direction: column; justify-content: center;
             border-radius: 10px;
-            transition: transform 0.2s ease-out;
         }
 
         .text-box {
             font-size: 18px;
-            line-height: 1.5;
+            line-height: 1.6;
             font-style: italic;
             flex-grow: 1;
             display: flex; flex-direction: column; justify-content: center; text-align: center;
@@ -164,7 +191,7 @@
 
         .nav-controls {
             display: flex; justify-content: space-between; align-items: center;
-            margin-top: 10px; min-height: 60px;
+            margin-top: 10px; min-height: 50px;
         }
 
         .arrow-btn {
@@ -195,29 +222,31 @@
         }
 
         .menu-trigger {
-            position: fixed;
-            top: max(20px, env(safe-area-inset-top));
-            right: 25px;
-            color: var(--gold);
-            font-size: 12px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 22px;
+            height: 16px;
             z-index: 10;
-            font-weight: 600;
-            padding: 5px;
-            border-bottom: 1px solid transparent;
-            transition: border 0.3s ease;
         }
-        
-        .menu-trigger:hover {
-            border-bottom: 1px solid var(--gold);
+
+        .menu-trigger span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: var(--gold);
+            border-radius: 2px;
         }
 
         .menu-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 10, 9, 0.95);
+            background: rgba(28, 20, 18, 0.97); /* Затемнение меню тоже адаптировано под новый фон */
             backdrop-filter: blur(10px);
             z-index: 100;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -234,26 +263,27 @@
             top: max(20px, env(safe-area-inset-top));
             right: 25px;
             color: var(--gold);
-            font-size: 30px;
+            font-size: 35px;
             cursor: pointer;
+            padding: 10px;
         }
 
         .menu-list {
             list-style: none;
             text-align: center;
-            width: 80%;
-            max-width: 300px;
+            width: 85%;
+            max-width: 320px;
         }
 
         .menu-item {
             color: #fff;
-            font-size: 18px;
+            font-size: 17px;
             font-style: italic;
-            margin: 20px 0;
+            margin: 22px 0;
             cursor: pointer;
             transition: color 0.3s ease;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(15px);
         }
 
         .menu-overlay.open .menu-item {
@@ -262,13 +292,14 @@
             transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
-        .menu-overlay.open .menu-item:nth-child(1) { transition-delay: 0.1s; }
-        .menu-overlay.open .menu-item:nth-child(2) { transition-delay: 0.15s; }
-        .menu-overlay.open .menu-item:nth-child(3) { transition-delay: 0.2s; }
-        .menu-overlay.open .menu-item:nth-child(4) { transition-delay: 0.25s; }
-        .menu-overlay.open .menu-item:nth-child(5) { transition-delay: 0.3s; }
-        .menu-overlay.open .menu-item:nth-child(6) { transition-delay: 0.35s; }
-        .menu-overlay.open .menu-item:nth-child(7) { transition-delay: 0.4s; }
+        .menu-overlay.open .menu-item:nth-child(1) { transition-delay: 0.05s; }
+        .menu-overlay.open .menu-item:nth-child(2) { transition-delay: 0.1s; }
+        .menu-overlay.open .menu-item:nth-child(3) { transition-delay: 0.15s; }
+        .menu-overlay.open .menu-item:nth-child(4) { transition-delay: 0.2s; }
+        .menu-overlay.open .menu-item:nth-child(5) { transition-delay: 0.25s; }
+        .menu-overlay.open .menu-item:nth-child(6) { transition-delay: 0.3s; }
+        .menu-overlay.open .menu-item:nth-child(7) { transition-delay: 0.35s; }
+        .menu-overlay.open .menu-item:nth-child(8) { transition-delay: 0.4s; }
 
         .menu-item:hover, .menu-item.active-chapter {
             color: var(--gold);
@@ -281,8 +312,6 @@
 
     <div class="bg-particles"></div>
     <div id="bg-flow"></div>
-
-    <div id="menuBtn" class="menu-trigger hidden" onclick="toggleMenu()">Chapters</div>
 
     <div id="menuBox" class="menu-overlay">
         <div class="menu-close" onclick="toggleMenu()">&times;</div>
@@ -328,6 +357,13 @@
             <div id="dynamicPages"></div>
 
             <div class="page" id="pFinal">
+                <div class="page-header-container">
+                    <div class="page-header">Эпилог</div>
+                    <div class="menu-trigger" onclick="toggleMenu()">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+                <div class="page-divider"></div>
                 <div class="text-box">
                     <div class="signature">С любовью,<br>твой маленький мальчик<span class="alive-point">!</span></div>
                 </div>
@@ -342,9 +378,18 @@
         const audio = document.getElementById('bg-music');
         
         function startAll() {
-            audio.play().catch(() => {});
             go('scr1', 'scr2');
         }
+
+        const chapters = [
+            { start: 1, end: 5, title: "1. Больше, чем цифры" },
+            { start: 6, end: 14, title: "2. Вспышки в памяти" },
+            { start: 15, end: 19, title: "3. До каждого столба..." },
+            { start: 20, end: 21, title: "4. Секунда на документы" },
+            { start: 22, end: 31, title: "5. Не из фильмов" },
+            { start: 32, end: 34, title: "6. Точка невозврата" },
+            { start: 35, end: 37, title: "7. Дорога, которую видно" }
+        ];
 
         const texts = [
             "Нам 7 месяцев. И если честно, я до сих пор не могу в это поверить. Вроде бы просто цифра, всего лишь половина года, но внутри это ощущается намного больше. Будто мы прожили друг с другом уже целую маленькую жизнь.",
@@ -362,7 +407,7 @@
             "Когда я целовал твои ручки после обнимашек, это было ощущение, будто я пытаюсь через прикосновения передать всё, что чувствую, но не всегда умею сказать словами. И даже поцелуи в голову, такие спокойные и мягкие, всегда дают мне чувство уюта, будто в этот момент всё правильно.",
             "И знаешь, я до сих пор помню тот момент, когда ты так старалась помочь мне с фотографией на документы. Вроде бы такая простая вещь со стороны, обычная фотография, но то, как ты тогда переживала за результат, как старалась сделать всё идеально и угодить мне, очень сильно меня тронуло.",
             "Мы вроде уже сделали нормальную фотографию, и я сначала даже не понял, зачем ты попросила подождать. А потом у меня внутри появилось очень тёплое чувство, потому что я понял, насколько тебе важно сделать что-то для меня по-настоящему хорошо. И честно, это было бесценно для меня. Наверное, именно в такие моменты я особенно сильно понимаю, насколько ты меня ценишь и любишь.",
-            "И знаешь, всё это вообще не про идеальные отношения. Потому что идеальных отношений, как в фильмах, не существует. Но нам это и не нужно. У нас есть что-то настоящее. Живые. Иногда сложное, иногда слишком эмоциональное, но настоящее.",
+            "И знаешь, всё это вообще не про идеальные отношения. Потому что идеальных отношений, как в иллюзиях, не существует. Но нам это и не нужно. У нас есть что-то настоящее. Живые. Иногда сложное, иногда слишком эмоциональное, но настоящее.",
             "И самое главное, что в этой реальности мы всё равно выбираем друг друга. Даже когда меньше общаемся. Даже когда ссоримся. Даже когда между нами появляются усталость или обиды. Мы всё равно не отпускаем друг друга. И с каждым таким моментом становимся только ближе.",
             "Ты для меня человек, с которым спокойно по-настоящему. Не просто хорошо или приятно, а именно спокойно. С тобой я могу быть собой, без попыток казаться лучше, чем я есть. Со всеми своими ошибками, эмоциями, ревностью, странностями, с тем, что иногда я сам в себе не понимаю.",
             "И ты всё это видела. И всё равно осталась рядом. И это, бин, наверное самое ценное.",
@@ -372,7 +417,7 @@
             "И если задуматься, обычная пара “на интрижку” вряд ли смогла бы пройти через всё то, через что прошли мы. Вряд ли смогла бы постоянно расти, меняться, учиться понимать друг друга и всё равно оставаться вместе. А мы смогли. И до сих пор продолжаем становиться лучше рядом друг с другом.",
             "И я правда счастлив просто общаться с тобой, быть рядом с тобой, чувствовать тебя в своей жизни. Поэтому пожалуйста, не смотри на те моменты, когда я могу злиться, расстраиваться или переживать из-за чего-то. Помни главное, я всегда люблю тебя и никогда не хочу делать тебе больно.",
             "Нет ничего в этом мире, что ты могла бы сделать, делаешь сейчас или сделаешь когда-нибудь, из-за чего я стал бы любить тебя меньше. Наоборот. С каждым днём, с каждой секундой рядом с тобой я люблю тебя только сильнее.",
-            "И знаешь, как говорила тётя Сабина, терпение реально очень важная штука. Особенно в отношениях. Да, ты иногда говоришь, что часто обижаешься, но солнышко моё, ты же знаешь, что я только умиляюсь с того, как ты это делаешь. Правда.",
+            "И знаешь, как говорила тётя Сабина, терпение реально очень важная штука. Особено в отношениях. Да, ты иногда говоришь, что часто обижаешься, но солнышко моё, ты же знаешь, что я только умиляюсь с того, как ты это делаешь. Правда.",
             "Может быть с другими людьми я слишком прямолинейный и вообще не собираюсь heç kimin nazı ile oynamaq, но с тобой всё совсем иначе. Да, между нами всего два года разницы, но как бы там ни было, в моих глазах ты всё равно моя малюська. Особенно в те моменты, когда дуешься или обижаешься.",
             "И иногда я даже представляю, как наша дочка в будущем тоже будет постоянно обижаться на нас так же мило, как ты сейчас)",
             "Я хочу быть для тебя человеком, рядом с которым тебе спокойно. Твоей опорой, поддержкой, тем, к кому ты всегда можешь прийти. И иншАллах, душа моя, у нас всё будет хорошо.",
@@ -421,9 +466,9 @@
         function check() {
             if(document.getElementById('pass').value === '201025') {
                 if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+                audio.play().catch(() => {});
                 buildPages();
                 go('scr2', 'scr3');
-                document.getElementById('menuBtn').classList.remove('hidden');
                 updateTimer();
                 setInterval(updateTimer, 1000);
             } else {
@@ -431,14 +476,28 @@
             }
         }
 
+        function getChapterTitle(pageIndex) {
+            const ch = chapters.find(c => pageIndex >= c.start && pageIndex <= c.end);
+            return ch ? ch.title : "";
+        }
+
         function buildPages() {
             const container = document.getElementById('dynamicPages');
             container.innerHTML = '';
             texts.forEach((text, i) => {
+                const pageNum = i + 1;
+                const chTitle = getChapterTitle(pageNum);
                 const div = document.createElement('div');
                 div.className = 'page';
-                div.id = `p${i+1}`;
+                div.id = `p${pageNum}`;
                 div.innerHTML = `
+                    <div class="page-header-container">
+                        <div class="page-header">${chTitle}</div>
+                        <div class="menu-trigger" onclick="toggleMenu()">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+                    <div class="page-divider"></div>
                     <div class="text-box">${text}</div>
                     <div class="nav-controls">
                         <button class="arrow-btn" onclick="prevPage()">&#8249;</button>
@@ -452,8 +511,6 @@
 
         function nextPage() {
             if(currentPage < totalPages - 1) { 
-                const currentEl = document.getElementById(`p${currentPage === totalPages - 1 ? 'Final' : currentPage}`);
-                if(currentEl) currentEl.classList.add('flipped');
                 currentPage++; 
                 updatePage(); 
             }
@@ -462,8 +519,6 @@
         function prevPage() {
             if(currentPage > 0) { 
                 currentPage--; 
-                const nextEl = document.getElementById(`p${currentPage === totalPages - 1 ? 'Final' : currentPage}`);
-                if(nextEl) nextEl.classList.remove('flipped');
                 updatePage(); 
             }
         }
@@ -471,6 +526,7 @@
         function updatePage() {
             if (navigator.vibrate) navigator.vibrate(20);
             document.querySelectorAll('.page').forEach((p, i) => {
+                p.style.transition = "transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease";
                 if(i === currentPage) {
                     p.classList.add('active');
                     p.classList.remove('flipped');
@@ -491,7 +547,20 @@
         function jumpToChapter(index) {
             currentPage = index;
             toggleMenu();
-            updatePage();
+            
+            document.querySelectorAll('.page').forEach((p, i) => {
+                p.style.transition = "none";
+                if(i === currentPage) {
+                    p.classList.add('active');
+                    p.classList.remove('flipped');
+                } else if(i < currentPage) {
+                    p.classList.remove('active');
+                    p.classList.add('flipped');
+                } else {
+                    p.classList.remove('active', 'flipped');
+                }
+            });
+            updateActiveChapterHighlight();
         }
 
         function updateActiveChapterHighlight() {
