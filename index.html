@@ -356,6 +356,7 @@
 
     <div id="scr3" class="screen hidden">
         <div class="book-wrapper">
+            <!-- Обложка книги -->
             <div class="page page-cover active" id="p0">
                 <div class="gold-embossing" id="bookCover">
                     <p style="letter-spacing: 5px; opacity: 0.6; font-size: 11px;">MEMORIES</p>
@@ -366,8 +367,10 @@
                 </div>
             </div>
 
+            <!-- Сюда встроятся динамические текстовые страницы -->
             <div id="dynamicPages"></div>
 
+            <!-- Финальная страница книги -->
             <div class="page" id="pFinal">
                 <div class="page-header-container">
                     <div class="page-header">Эпилог</div>
@@ -430,7 +433,7 @@
             "И я правда счастлив просто общаться с тобой, быть рядом с тобой, чувствовать тебя в своей жизни. Поэтому пожалуйста, не смотри на те моменты, когда я могу злиться, расстраиваться или переживать из-за чего-то. Помни главное, я всегда люблю тебя и никогда не хочу делать тебе больно.",
             "Нет ничего в этом мире, что ты могла бы сделать, делаешь сейчас или сделаешь когда-нибудь, из-за чего я стал бы любить тебя меньше. Наоборот. С каждым днём, с каждой секундой рядом с тобой я люблю тебя только сильнее.",
             "И знаешь, как говорила тётя Сабина, терпение реально очень важная штука. Особено в отношениях. Да, ты иногда говоришь, что часто обижаешься, но солнышко моё, ты же знаешь, что я только умиляюсь с того, как ты это делаешь. Правда.",
-            "Может быть с другими людьми я слишком прямолинейный и вообще не собираюсь heç kimнnazı ile oynamaq, но с тобой всё совсем иначе. Да, между нами всего два года разницы, но как бы там ни было, в моих глазах ты всё равно моя малюська. Особенно в те моменты, когда дуешься или обижаешься.",
+            "Может быть с другими людьми я слишком прямолинейный и вообще не собираюсь heç kimin nazı ile oynamaq, но с тобой всё совсем иначе. Да, между нами всего два года разницы, но как бы там ни было, в моих глазах ты всё равно моя малюська. Особенно в те моменты, когда дуешься или обижаешься.",
             "И иногда я даже представляю, как наша дочка в будущем тоже будет постоянно обижаться на нас так же мило, как ты сейчас)",
             "Я хочу быть для тебя человеком, рядом с которым тебе спокойно. Твоей опорой, поддержкой, тем, к кому ты всегда можешь прийти. И иншАллах, душа моя, у нас всё будет хорошо.",
             "Я правда очень ценю тебя. И иногда мне даже стыдно за свои поступки, за моменты, когда я делаю тебе больно или веду себя не так, как должен. Но ты всё равно не уходишь. Ты остаёшься рядом. И вместо того чтобы ломаться окончательно, мы пытаемся говорить, понимать друг друга, исправлять ошибки.",
@@ -444,7 +447,7 @@
         ];
 
         let currentPage = 0;
-        let totalPages = 2; // Будет пересчитано динамически при сборке книги
+        let totalPages = 2; 
         const words = ["E🤍", "forever"];
         const flowContainer = document.getElementById('bg-flow');
 
@@ -520,7 +523,6 @@
                 container.appendChild(div);
             });
             
-            // Динамический пересчет страниц ПОСЛЕ того, как они созданы в DOM
             totalPages = texts.length + 2; 
         }
 
@@ -538,18 +540,23 @@
             }
         }
 
+        // ПОЛНОСТЬЮ ПЕРЕРАБОТАННАЯ И НАДЕЖНАЯ ФУНКЦИЯ ПЕРЕЛИСТЫВАНИЯ
         function updatePage() {
             if (navigator.vibrate) navigator.vibrate(20);
-            document.querySelectorAll('.page').forEach((p, i) => {
+            
+            const allPages = document.querySelectorAll('.page');
+            allPages.forEach((p, i) => {
                 p.style.transition = "transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease";
-                if(i === currentPage) {
+                
+                if (i === currentPage) {
                     p.classList.add('active');
                     p.classList.remove('flipped');
-                } else if(i < currentPage) {
+                } else if (i < currentPage) {
                     p.classList.remove('active');
                     p.classList.add('flipped');
                 } else {
-                    p.classList.remove('active', 'flipped');
+                    p.classList.remove('active');
+                    p.classList.remove('flipped');
                 }
             });
             updateActiveChapterHighlight();
@@ -563,16 +570,18 @@
             currentPage = index;
             toggleMenu();
             
-            document.querySelectorAll('.page').forEach((p, i) => {
-                p.style.transition = "none";
-                if(i === currentPage) {
+            const allPages = document.querySelectorAll('.page');
+            allPages.forEach((p, i) => {
+                p.style.transition = "none"; // Выключаем анимацию при прыжках из меню
+                if (i === currentPage) {
                     p.classList.add('active');
                     p.classList.remove('flipped');
-                } else if(i < currentPage) {
+                } else if (i < currentPage) {
                     p.classList.remove('active');
                     p.classList.add('flipped');
                 } else {
-                    p.classList.remove('active', 'flipped');
+                    p.classList.remove('active');
+                    p.classList.remove('flipped');
                 }
             });
             updateActiveChapterHighlight();
